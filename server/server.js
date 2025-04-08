@@ -52,6 +52,10 @@ cloudinary.config({
   secure: true,
 });
 
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running");
+});
+
 // 🔹 API to get all posts
 app.get("/api/posts", async (req, res) => {
   try {
