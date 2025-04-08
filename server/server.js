@@ -10,6 +10,8 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+console.log("PORT is ", PORT);
+
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
 //   projectId: serviceAccount.project_id, // Explicitly set the project ID
