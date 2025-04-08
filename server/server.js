@@ -8,7 +8,7 @@ const cloudinary = require("cloudinary").v2;
 // const serviceAccount = require("./serviceAccountKey.json");
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 8080;
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
