@@ -1,25 +1,23 @@
 steps:
-  # Step 1: Build Docker image from /server folder
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA', '.']
-    dir: 'server'  # Dockerfile is in the /server directory
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$COMMIT_SHA', '.']
 
-  # Step 2: Push image to Artifact Registry
+  # Step 2: Push the image to Container Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA']
+    args: ['push', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$COMMIT_SHA']
 
-  # Step 3: Deploy to Cloud Run
+  # Step 3: Deploy the image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
-      - run
-      - deploy
-      - backend
-      - --image=gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA
-      - --region=us-central1
-      - --platform=managed
-      - --allow-unauthenticated
-      - --port=8080
+      [
+        'run', 'deploy', 'backend',
+        '--image', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$COMMIT_SHA',
+        '--region', 'us-central1',
+        '--platform', 'managed',
+        '--allow-unauthenticated'
+      ]
 
 images:
-  - gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA
+  - 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$COMMIT_SHA'
