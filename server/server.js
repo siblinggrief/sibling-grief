@@ -16,18 +16,24 @@ const PORT = process.env.PORT || 8080;
 //   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,
 // });
 
-admin.initializeApp({
-  credential: admin.credential.cert({
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY
+        ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+        : undefined,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
+    databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
     projectId: process.env.FIREBASE_PROJECT_ID,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY
-      ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
-      : undefined,
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-  }),
-  databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-});
+  });
 
+  console.log("✅ Firebase initialized");
+} catch (err) {
+  console.error("❌ Firebase init failed", err);
+}
+ 
 const db = admin.firestore();
 
 app.use(cors());
@@ -110,6 +116,8 @@ app.delete("/api/posts/:id", async (req, res) => {
   }
 });
 
+console.log("🔥 Firebase and Cloudinary configured.");
+
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`✅ Server is running and listening on port ${PORT}`);
 });
