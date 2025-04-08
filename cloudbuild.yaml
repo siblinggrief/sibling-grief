@@ -1,0 +1,25 @@
+steps:
+  # Step 1: Build Docker image from /server folder
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA', '.']
+    dir: 'server'  # Dockerfile is in the /server directory
+
+  # Step 2: Push image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA']
+
+  # Step 3: Deploy to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - backend
+      - --image=gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA
+      - --region=us-central1
+      - --platform=managed
+      - --allow-unauthenticated
+      - --port=8080
+
+images:
+  - gcr.io/$PROJECT_ID/github.com/siblinggrief/sibling-grief:$SHORT_SHA
