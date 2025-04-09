@@ -31,13 +31,13 @@ const db = admin.firestore();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Configure Cloudinary
-// cloudinary.config({
-//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-//   api_key: process.env.CLOUDINARY_API_KEY,
-//   api_secret: process.env.CLOUDINARY_API_SECRET,
-//   secure: true,
-// });
+//🔹 Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
 
 app.get("/", (req, res) => {
   res.send("✅ Backend is running");
@@ -90,17 +90,17 @@ app.delete("/api/posts/:id", async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    // const postData = postSnapshot.data();
+    const postData = postSnapshot.data();
 
     // If post has an audio file, delete it from Cloudinary
-    // if (postData.audioUrl) {
-    //   const cloudinaryUrl = postData.audioUrl;
-    //   const publicId = cloudinaryUrl.split("/").pop().split(".")[0]; // Extract public ID
+    if (postData.audioUrl) {
+      const cloudinaryUrl = postData.audioUrl;
+      const publicId = cloudinaryUrl.split("/").pop().split(".")[0]; // Extract public ID
 
-    //   console.log(`Deleting Cloudinary file: ${publicId}`);
+      console.log(`Deleting Cloudinary file: ${publicId}`);
 
-    //   await cloudinary.uploader.destroy(publicId, { resource_type: "video" })
-    // }
+      await cloudinary.uploader.destroy(publicId, { resource_type: "video" })
+    }
 
     // Delete post from Firestore
     await postRef.delete();
