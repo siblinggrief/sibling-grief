@@ -5,36 +5,11 @@ const express = require("express");
 const cors = require("cors");
 const admin = require("firebase-admin");
 const cloudinary = require("cloudinary").v2;
-// const serviceAccount = require("./serviceAccountKey.json");
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-console.log("PORT is ", PORT);
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   projectId: serviceAccount.project_id,
-//   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,
-// });
-
 try {
-  console.log(
-    'env variables are: ',
-    'FIREBASE_PROJECT_ID: ', process.env.FIREBASE_PROJECT_ID,
-    'FIREBASE_PRIVATE_KEY: ', process.env.FIREBASE_PRIVATE_KEY,
-    '---- OR ----', process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-    'FIREBASE_CLIENT_EMAIL: ', process.env.FIREBASE_CLIENT_EMAIL
-  );
-  let obj = {
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY
-        ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
-        : undefined,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    }
-  console.log('obj is ---------> ', obj);
-
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.FIREBASE_PROJECT_ID,
@@ -51,7 +26,7 @@ try {
   console.error("❌ Firebase init failed", err);
 }
  
-// const db = admin.firestore();
+const db = admin.firestore();
 
 app.use(cors());
 app.use(express.json());
@@ -69,16 +44,16 @@ app.get("/", (req, res) => {
 });
 
 // 🔹 API to get all posts
-// app.get("/api/posts", async (req, res) => {
-//   try {
-//     const postsSnapshot = await db.collection("posts").orderBy("createdAt", "desc").get();
-//     const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-//     res.json(posts);
-//   } catch (error) {
-//     console.error("Error fetching posts:", error);
-//     res.status(500).json({ error: "Failed to fetch posts" });
-//   }
-// });
+app.get("/api/posts", async (req, res) => {
+  try {
+    const postsSnapshot = await db.collection("posts").orderBy("createdAt", "desc").get();
+    const posts = postsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ error: "Failed to fetch posts" });
+  }
+});
 
 // 🔹 API to create a new post
 // app.post("/api/posts", async (req, res) => {
