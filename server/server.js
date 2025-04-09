@@ -8,8 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // 🔹 Import config and routes
-require("./firebase"); // initializes Firebase
-require("./cloudinary"); // configures Cloudinary
+require("./config/firebase"); // initializes Firebase
+require("./config/cloudinary"); // configures Cloudinary
 const postRoutes = require("./postRoutes");
 
 app.use(cors());
