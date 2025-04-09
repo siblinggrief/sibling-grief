@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 8080;
 // 🔹 Import config and routes
 require("./config/firebase"); // initializes Firebase
 require("./config/cloudinary"); // configures Cloudinary
-const postRoutes = require("./postRoutes");
+const postRoutes = require("./routes/postRoutes");
 
 app.use(cors());
 app.use(express.json());
