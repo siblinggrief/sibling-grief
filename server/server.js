@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 8080;
 require("./config/firebase"); // initializes Firebase
 require("./config/cloudinary"); // configures Cloudinary
 const postRoutes = require("./routes/postRoutes");
+const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -28,8 +29,9 @@ app.get("/", (req, res) => {
   });
 });
 
-// 🔹 Use post routes
+// 🔹 Use routes
 app.use("/api", postRoutes);
+app.use("/api", cloudinaryRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running and listening on port ${PORT}`);
