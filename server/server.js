@@ -9,6 +9,7 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+//🔹 Initialize Firebase
 try {
   admin.initializeApp({
     credential: admin.credential.cert({
@@ -26,6 +27,7 @@ try {
   console.error("❌ Firebase init failed", err);
 }
  
+//🔹 Database
 const db = admin.firestore();
 
 app.use(cors());
@@ -39,6 +41,7 @@ cloudinary.config({
   secure: true,
 });
 
+// 🔹 Root route
 app.get("/", (req, res) => {
   res.send("✅ Backend is running");
 });
@@ -109,6 +112,20 @@ app.delete("/api/posts/:id", async (req, res) => {
   } catch (error) {
     console.error("Error deleting post:", error);
     res.status(500).json({ error: "Failed to delete post" });
+  }
+});
+
+// 🔹 Test API to upload in Cloudinary
+app.post("/api/test-upload", async (req, res) => {
+  try {
+    const result = await cloudinary.uploader.upload(
+      "https://res.cloudinary.com/demo/image/upload/sample.jpg",
+      { public_id: "test_sample_image" }
+    );
+    res.json(result);
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ error: "Cloudinary upload failed" });
   }
 });
 
