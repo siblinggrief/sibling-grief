@@ -1,5 +1,5 @@
-const { db, admin } = require("./firebase");
-const { deleteFile } = require("./cloudinaryService");
+const { db, admin } = require("../config/firebase");
+const { deleteFile } = require("../services/cloudinaryService");
 
 const getPosts = async (req, res) => {
   try {

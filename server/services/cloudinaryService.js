@@ -1,4 +1,4 @@
-const cloudinary = require("./cloudinary");
+const cloudinary = require("../config/cloudinary");
 
 const uploadAudio = async (filePath, publicId) => {
   return cloudinary.uploader.upload(filePath, {

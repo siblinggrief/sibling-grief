@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getPosts, createPost, deletePost } = require("./postController");
+const { getPosts, createPost, deletePost } = require("../controllers/postController");
 
 // Routes
 router.get("/posts", getPosts);
@@ -8,7 +8,7 @@ router.post("/posts", createPost);
 router.delete("/posts/:id", deletePost);
 
 // Test Cloudinary Upload
-// const cloudinary = require("./cloudinary");
+// const cloudinary = require("../config/cloudinary");
 // router.post("/test-upload", async (req, res) => {
 //   try {
 //     const result = await cloudinary.uploader.upload(
