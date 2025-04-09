@@ -14,30 +14,36 @@ console.log("PORT is ", PORT);
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
-//   projectId: serviceAccount.project_id, // Explicitly set the project ID
+//   projectId: serviceAccount.project_id,
 //   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,
 // });
 
-// try {
-//   admin.initializeApp({
-//     credential: admin.credential.cert({
-//       projectId: process.env.FIREBASE_PROJECT_ID,
-//       privateKey: process.env.FIREBASE_PRIVATE_KEY
-//         ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
-//         : undefined,
-//       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-//     }),
-//     databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
-//     projectId: process.env.FIREBASE_PROJECT_ID,
-//   });
+try {
+  console.log('env variables are: ', 'FIREBASE_PROJECT_ID: ',  process.env.FIREBASE_PROJECT_ID,'FIREBASE_PRIVATE_KEY: ', process.env.FIREBASE_PRIVATE_KEY, '---- OR ----', FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"), 'FIREBASE_CLIENT_EMAIL: ', process.env.FIREBASE_CLIENT_EMAIL);
+  let obj = {
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY
+        ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+        : undefined,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }
+  console.log('obj is ---------> ', obj);
 
-//   console.log("Firebase project:", process.env.FIREBASE_PROJECT_ID);
-//   console.log("Client email:", process.env.FIREBASE_CLIENT_EMAIL);
-//   console.log("Private key is present:", !!process.env.FIREBASE_PRIVATE_KEY);
-//   console.log("✅ Firebase initialized");
-// } catch (err) {
-//   console.error("❌ Firebase init failed", err);
-// }
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY
+        ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+        : undefined,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    }),
+    databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+  });
+  console.log("✅ Firebase initialized");
+} catch (err) {
+  console.error("❌ Firebase init failed", err);
+}
  
 // const db = admin.firestore();
 
