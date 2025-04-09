@@ -56,63 +56,61 @@ app.get("/api/posts", async (req, res) => {
 });
 
 // 🔹 API to create a new post
-// app.post("/api/posts", async (req, res) => {
-//   try {
-//     const { title, audioUrl } = req.body;
-//     if (!title) return res.status(400).json({ error: "Title is required" });
+app.post("/api/posts", async (req, res) => {
+  try {
+    const { title, audioUrl } = req.body;
+    if (!title) return res.status(400).json({ error: "Title is required" });
 
-//     const newPost = {
-//       title,
-//       upVotesCount: 0,
-//       downVotesCount: 0,
-//       audioUrl,
-//       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-//       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
-//     };
+    const newPost = {
+      title,
+      upVotesCount: 0,
+      downVotesCount: 0,
+      audioUrl,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    };
 
-//     const docRef = await db.collection("posts").add(newPost);
-//     console.log("Post added successfully to Firestore.");
-//     res.json({ id: docRef.id, ...newPost });
-//   } catch (error) {
-//     console.error("Error creating post:", error);
-//     res.status(500).json({ error: "Failed to create post" });
-//   }
-// });
+    const docRef = await db.collection("posts").add(newPost);
+    console.log("Post added successfully to Firestore.");
+    res.json({ id: docRef.id, ...newPost });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Failed to create post" });
+  }
+});
 
 // 🔹 API to delete a post (including Cloudinary file)
-// app.delete("/api/posts/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const postRef = db.collection("posts").doc(id);
-//     const postSnapshot = await postRef.get();
+app.delete("/api/posts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const postRef = db.collection("posts").doc(id);
+    const postSnapshot = await postRef.get();
 
-//     if (!postSnapshot.exists) {
-//       return res.status(404).json({ error: "Post not found" });
-//     }
+    if (!postSnapshot.exists) {
+      return res.status(404).json({ error: "Post not found" });
+    }
 
-//     const postData = postSnapshot.data();
+    // const postData = postSnapshot.data();
 
-//     // If post has an audio file, delete it from Cloudinary
-//     if (postData.audioUrl) {
-//       const cloudinaryUrl = postData.audioUrl;
-//       const publicId = cloudinaryUrl.split("/").pop().split(".")[0]; // Extract public ID
+    // If post has an audio file, delete it from Cloudinary
+    // if (postData.audioUrl) {
+    //   const cloudinaryUrl = postData.audioUrl;
+    //   const publicId = cloudinaryUrl.split("/").pop().split(".")[0]; // Extract public ID
 
-//       console.log(`Deleting Cloudinary file: ${publicId}`);
+    //   console.log(`Deleting Cloudinary file: ${publicId}`);
 
-//       await cloudinary.uploader.destroy(publicId, { resource_type: "video" })
-//     }
+    //   await cloudinary.uploader.destroy(publicId, { resource_type: "video" })
+    // }
 
-//     // Delete post from Firestore
-//     await postRef.delete();
-//     res.json({ message: "Post deleted successfully" });
+    // Delete post from Firestore
+    await postRef.delete();
+    res.json({ message: "Post deleted successfully" });
 
-//   } catch (error) {
-//     console.error("Error deleting post:", error);
-//     res.status(500).json({ error: "Failed to delete post" });
-//   }
-// });
-
-// console.log("🔥 Firebase and Cloudinary configured.");
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    res.status(500).json({ error: "Failed to delete post" });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running and listening on port ${PORT}`);
