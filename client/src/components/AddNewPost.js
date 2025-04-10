@@ -9,6 +9,7 @@ const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 const AddNewPost = ({ onPostAdded }) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const mediaRecorderRef = useRef(null);
@@ -18,6 +19,7 @@ const AddNewPost = ({ onPostAdded }) => {
   const handleClose = () => {
     setOpen(false);
     setTitle("");
+    setDescription("");
     setAudioBlob(null);
   };
 
@@ -85,7 +87,7 @@ const AddNewPost = ({ onPostAdded }) => {
       const response = await fetch(`${API_URL}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, audioUrl }),
+        body: JSON.stringify({ title, description, audioUrl }),
       });
 
       if (!response.ok) throw new Error("Failed to add post");
@@ -113,6 +115,8 @@ const AddNewPost = ({ onPostAdded }) => {
         onClose={handleClose}
         title={title}
         setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
         isSaving={isSaving}
         isRecording={isRecording}
         startRecording={startRecording}

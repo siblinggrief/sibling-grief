@@ -1,7 +1,7 @@
 import React from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, useTheme } from "@mui/material";
 
-const PostModal = ({ open, onClose, title, setTitle, isSaving, isRecording, startRecording, stopRecording, audioBlob, handleSubmit }) => {
+const PostModal = ({ open, onClose, title, setTitle, description, setDescription, isSaving, isRecording, startRecording, stopRecording, audioBlob, handleSubmit }) => {
   const theme = useTheme(); // Access the theme
 
   return (
@@ -30,6 +30,15 @@ const PostModal = ({ open, onClose, title, setTitle, isSaving, isRecording, star
           sx={{
             input: { color: theme.palette.text.primary }, // Use theme text color
           }}
+        />
+        <TextField
+          label="Description"
+          multiline
+          rows={4}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          fullWidth
+          margin="normal"
         />
 
         {/* Recording Button */}

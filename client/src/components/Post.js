@@ -64,6 +64,12 @@ const Post = ({ post, onPostDeleted }) => {
             </IconButton>
           </Stack>
 
+          {post.description && (
+            <Typography variant="body2" sx={{ mt: 1, whiteSpace: "pre-wrap" }}>
+              {post.description}
+            </Typography>
+          )}
+
           {/* Display Audio Player if audioUrl exists */}
           {post.audioUrl && post.audioUrl.startsWith("http") && (
             <audio controls style={{ width: "100%", marginTop: 10 }}>

@@ -14,11 +14,12 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, audioUrl } = req.body;
+    const { title, description, audioUrl } = req.body;
     if (!title) return res.status(400).json({ error: "Title is required" });
 
     const newPost = {
       title,
+      description,
       upVotesCount: 0,
       downVotesCount: 0,
       audioUrl,
