@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTheme } from "@mui/material/styles";
 import {
   Card,
   CardContent,
@@ -6,6 +7,7 @@ import {
   IconButton,
   Stack,
 } from "@mui/material";
+import VoteIconButton from "./VoteIconButton";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -14,6 +16,8 @@ import DeleteDialog from "./DeleteDialog";
 import API_URL from "../config";
 
 const Post = ({ post, onPostDeleted }) => {
+  const theme = useTheme();
+
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -43,7 +47,13 @@ const Post = ({ post, onPostDeleted }) => {
             <Typography
               variant="h6"
               gutterBottom
-              sx={{ textDecoration: "none", color: "inherit", "&:hover": { color: "blue" } }}
+              sx={{
+                    textDecoration: "none",
+                    color: "inherit",
+                    "&:hover": {
+                      color: theme.palette.text.secondary,
+                    },
+                  }}
             >
               {post.title}
             </Typography>
@@ -64,17 +74,13 @@ const Post = ({ post, onPostDeleted }) => {
 
           {/* Vote & Comment Buttons */}
           <Stack direction="row" spacing={1} alignItems="center" sx={{ marginTop: 1 }}>
-            <IconButton size="small" color="primary">
-              <ArrowUpwardIcon />
-            </IconButton>
+            <VoteIconButton icon={ArrowUpwardIcon} color={theme.palette.primary.main} />
             <Typography>{post.upVotesCount}</Typography>
-            <IconButton size="small" color="secondary">
-              <ArrowDownwardIcon />
-            </IconButton>
+
+            <VoteIconButton icon={ArrowDownwardIcon} color={theme.palette.secondary.main} />
             <Typography>{post.downVotesCount}</Typography>
-            <IconButton size="small">
-              <ChatBubbleOutlineIcon />
-            </IconButton>
+
+            <VoteIconButton icon={ChatBubbleOutlineIcon} />
           </Stack>
         </CardContent>
       </Card>
