@@ -14,7 +14,7 @@ steps:
         "run",
         "deploy",
         "frontend-service",
-        "--source=client/build",
+        "--source=client",
         "--region=us-central1",
         "--platform=managed",
         "--allow-unauthenticated"
