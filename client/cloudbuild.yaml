@@ -1,6 +1,11 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/frontend:$SHORT_SHA', '.']
+    args: [
+      'build',
+      '-t', 'gcr.io/$PROJECT_ID/frontend:$SHORT_SHA',
+      '--build-arg', 'REACT_APP_API_BASE_URL=${_API_BASE_URL}',
+      '.'
+    ]
     dir: client
 
   - name: 'gcr.io/cloud-builders/docker'
