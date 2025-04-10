@@ -48,7 +48,14 @@ const deletePost = async (req, res) => {
 
     if (postData.audioUrl) {
       const cloudinaryUrl = postData.audioUrl;
-      const publicId = cloudinaryUrl.split("/").pop().split(".")[0];
+
+      // Remove domain and version info to isolate public_id
+      const publicIdWithExtension = cloudinaryUrl
+        .split("/upload/")[1] // test-audios/test_audio_upload.mp3
+        .replace(/^v\d+\//, ""); // remove version folder if present
+
+      const publicId = publicIdWithExtension.replace(/\.[^/.]+$/, ""); // remove .mp3
+
       console.log(`Deleting Cloudinary file: ${publicId}`);
       await deleteFile(publicId);
     }
