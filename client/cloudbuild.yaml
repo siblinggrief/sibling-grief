@@ -4,6 +4,8 @@ steps:
       'build',
       '-t', 'gcr.io/$PROJECT_ID/frontend:$SHORT_SHA',
       '--build-arg', 'REACT_APP_API_URL=${_REACT_APP_API_URL}',
+      '--build-arg', 'REACT_APP_CLOUDINARY_UPLOAD_URL=${_REACT_APP_CLOUDINARY_UPLOAD_URL}',
+      '--build-arg', 'REACT_APP_CLOUDINARY_UPLOAD_PRESET=${_REACT_APP_CLOUDINARY_UPLOAD_PRESET}',
       '.'
     ]
     dir: client
@@ -27,3 +29,5 @@ options:
 
 substitutions:
   _REACT_APP_API_URL: https://backend-57188208028.us-central1.run.app
+  _REACT_APP_CLOUDINARY_UPLOAD_URL: https://api.cloudinary.com/v1_1/dzap30ws0/upload
+  _REACT_APP_CLOUDINARY_UPLOAD_PRESET: unsigned_upload
