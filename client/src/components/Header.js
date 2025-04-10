@@ -1,11 +1,14 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const Header = () => {
+  const theme = useTheme();
+
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#4A013A" }}> {/* Darker Magenta */}
+    <AppBar position="static" sx={{ backgroundColor: theme.palette.custom.header }}>
       <Toolbar>
-        <Typography variant="h6">Bulletin App</Typography>
+        <Typography variant="h6">Sibling Grief Support</Typography>
       </Toolbar>
     </AppBar>
   );

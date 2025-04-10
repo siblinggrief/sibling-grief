@@ -1,8 +1,8 @@
 import React, { useState, useRef } from "react";
 import { Box, Button } from "@mui/material";
-import PostModal from "./PostModal"; // Import the new PostModal component
+import PostModal from "./PostModal";
+import API_URL from "../config";
 
-const API_URL = process.env.REACT_APP_API_URL;
 const CLOUDINARY_UPLOAD_URL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 

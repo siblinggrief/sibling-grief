@@ -3,24 +3,27 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#62054A", // Dark Magenta
+      main: "#1B4332", // Forest Green
     },
     secondary: {
-      main: "#93056E", // Vivid Dark Pink
+      main: "#2D6A4F", // Slightly lighter green
     },
     error: {
-      main: "#93056E", // Match delete button color to theme
+      main: "#B00020",
     },
     background: {
-      default: "#2E2E2E", 
-      paper: "#3E3E3E", 
+      default: "#121212",
+      paper: "#1D1D1D",
     },
     text: {
-      primary: "#FFFFFF", 
-      secondary: "#FDBCEC", 
+      primary: "#FFFFFF",
+      secondary: "#A9D6C6",
     },
     action: {
-      hover: "#7A0459", // Defined hover color
+      hover: "#2D6A4F",
+    },
+    custom: {
+      header: "#163526", // Slightly darker than #1B4332
     },
   },
 });

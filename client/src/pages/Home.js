@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Post from "../components/Post";
 import AddNewPost from "../components/AddNewPost";
 import { Typography, Box, CircularProgress } from "@mui/material";
+import API_URL from "../config";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -14,7 +15,7 @@ const Home = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`);
+      const response = await fetch(`${API_URL}/api/posts`);
       if (!response.ok) throw new Error("Failed to fetch posts");
       const data = await response.json();
       setPosts(data);

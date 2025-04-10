@@ -15,7 +15,7 @@ const Footer = () => {
         mt: "auto", // Pushes footer to bottom when wrapped in a flex container
       }}
     >
-      <Typography variant="body2">&copy; {new Date().getFullYear()} Bulletin Board</Typography>
+      <Typography variant="body2">&copy; {new Date().getFullYear()} Sibling Grief Support</Typography>
     </Box>
   );
 };
