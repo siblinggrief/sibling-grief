@@ -1,16 +1,20 @@
-# Step 1: Build React app
-FROM node:18 as build
+# client/Dockerfile
+
+FROM node:18
+
+# Set working directory
 WORKDIR /app
-COPY . .
+
+# Copy package files and install dependencies
+COPY package*.json ./
 RUN npm install
+
+# Copy the rest of the app and build it
+COPY . .
 RUN npm run build
 
-# Step 2: Serve with nginx
-FROM nginx:alpine
-COPY --from=build /app/build /usr/share/nginx/html
+# Install 'serve' to serve the build folder
+RUN npm install -g serve
 
-# Copy default nginx config
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Use serve to run the app on port 8080
+CMD ["serve", "-s", "build", "-l", "8080"]
