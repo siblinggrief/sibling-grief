@@ -2,8 +2,8 @@
 FROM node:18
 
 # Accept build-time environment variable
-ARG _API_BASE_URL
-ENV REACT_APP_API_URL=$_API_BASE_URL
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 # Set working directory
 WORKDIR /app
@@ -16,7 +16,7 @@ RUN npm install
 COPY . .
 
 # Optional: log value during build
-RUN echo "Building with API_BASE_URL=$_API_BASE_URL"
+RUN echo "Building with API_BASE_URL=$REACT_APP_API_URL"
 
 # Build the app with the env var included
 RUN npm run build

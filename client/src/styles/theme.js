@@ -3,27 +3,54 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#1B4332", // Forest Green
+      main: "#14532d", // Dark Green
     },
     secondary: {
-      main: "#2D6A4F", // Slightly lighter green
+      main: "#1e7a40", // Lighter Green
     },
     error: {
-      main: "#B00020",
+      main: "#888888", // Replacing red with mid-grey
     },
     background: {
-      default: "#121212",
-      paper: "#1D1D1D",
+      default: "#1e1e1e", // Deep grey
+      paper: "#2a2a2a",   // Slightly lighter grey
     },
     text: {
       primary: "#FFFFFF",
-      secondary: "#A9D6C6",
+      secondary: "#A5D6A7", // Light greenish-grey
     },
     action: {
-      hover: "#2D6A4F",
+      hover: "#355e42",           // Dark green-grey
+      disabledBackground: "#3d3d3d", // Grey background for disabled buttons
+      disabled: "#bbbbbb",            // Light grey text when disabled
     },
     custom: {
-      header: "#163526", // Slightly darker than #1B4332
+      header: "#0e3b25", // Very dark green for AppBar
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
+        },
+      },
+      variants: [
+        {
+          props: { variant: "darkContained" },
+          style: {
+            backgroundColor: "#2e7d32", // Rich green
+            color: "#ffffff",
+            "&:hover": {
+              backgroundColor: "#1b5e20",
+            },
+            "&.Mui-disabled": {
+              backgroundColor: "#444", // Greyed out
+              color: "#bbb",
+            },
+          },
+        },
+      ],
     },
   },
 });

@@ -57,9 +57,8 @@ const PostModal = ({ open, onClose, title, setTitle, isSaving, isRecording, star
           Cancel
         </Button>
         <Button
+          variant="darkContained"
           onClick={handleSubmit}
-          variant="contained"
-          color="primary"
           disabled={!title.trim() || isSaving || audioBlob === null}
         >
           {isSaving ? "Saving..." : "Save"}
