@@ -34,10 +34,10 @@ const Home = () => {
       {/* Title & Introduction */}
       <Box textAlign="center" my={4}>
         <Typography variant="h4" gutterBottom>
-          Welcome to the Bulletin App
+          Welcome to the Sibling Grief Support website
         </Typography>
         <Typography variant="body1" color="textSecondary">
-          Share your thoughts and updates through voice and text. Post, vote, and engage with the community!
+        Share, connect, and heal through voice and text with others who understand sibling loss.
         </Typography>
       </Box>
 

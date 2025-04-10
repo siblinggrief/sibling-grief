@@ -57,6 +57,7 @@ const AddNewPost = ({ onPostAdded }) => {
     formData.append("file", blob);
     formData.append("upload_preset", CLOUDINARY_PRESET);
     formData.append("resource_type", "raw");
+    formData.append("folder", "Sibling Grief Audio Posts");
 
     try {
       const response = await fetch(CLOUDINARY_UPLOAD_URL, {
