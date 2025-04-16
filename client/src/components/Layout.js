@@ -1,7 +1,6 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Header from "./Header";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
@@ -14,7 +13,6 @@ const Layout = ({ children }) => {
       }}
     >
       <Header />
-      <Navbar />
       <Box sx={{ flexGrow: 1, p: 2 }}>{children}</Box> {/* Pushes content */}
       <Footer />
     </Box>

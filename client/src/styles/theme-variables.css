@@ -1,0 +1,16 @@
+:root {
+    --color-primary: #14532d;
+    --color-secondary: #1e7a40;
+    --color-error: #888888;
+    --color-bg-default: #1e1e1e;
+    --color-bg-paper: #2a2a2a;
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a5d6a7;
+    --color-hover: #355e42;
+    --color-hover-text: #A5D6A7;
+    --color-disabled-bg: #3d3d3d;
+    --color-disabled: #bbbbbb;
+    --color-header: #0e3b25;
+    --color-light-grey: #d0d0d0;
+    --color-active-bg: #e0e0e0;
+  }

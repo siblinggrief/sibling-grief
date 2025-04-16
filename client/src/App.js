@@ -7,10 +7,14 @@ import { AuthProvider } from "./context/AuthContext";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import ToShare from "./pages/ToShare";
+import ToCare from "./pages/ToCare";
+import ToPrepare from "./pages/ToPrepare";
+import SelfCare from "./pages/SelfCare";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import theme from "./styles/theme";
+import "./styles/theme-variables.css";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -37,7 +41,10 @@ const App = () => {
                 {/* Public Routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/contact" element={<Contact />} />
+                <Route path="/to-share" element={<ToShare />} />
+                <Route path="/to-care" element={<ToCare />} />
+                <Route path="/to-prepare" element={<ToPrepare />} />
+                <Route path="/self-care" element={<SelfCare />} />                
 
                 {/* Protected Route */}
                 {user ? (
@@ -51,7 +58,7 @@ const App = () => {
               </Routes>
             </Container>
           </Layout>
-      </Router>
+        </Router>
       </AuthProvider>
     </ThemeProvider>
   );

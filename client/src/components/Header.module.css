@@ -1,0 +1,78 @@
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logoImage {
+  height: 32px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 16px;
+}
+
+.navLinks {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  gap: 16px;
+}
+
+.navLink {
+  color: inherit;
+  text-decoration: none;
+  padding: 8px 16px;
+  font-weight: normal;
+  border-radius: 25px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navLink:hover {
+  background-color: var(--color-hover);
+  color: var(--color-hover-text); /* Lighter greenish-grey on hover */
+}
+
+.activeNav {
+  background-color: var(--color-active-bg); /* lighter grey */
+  color: var(--color-primary);
+  font-weight: bold;
+  border-radius: 25px;
+  padding: 8px 16px;
+  border: 2px solid var(--color-primary);
+  text-decoration: none; /* Remove underline on active */
+}
+
+.searchWrapper {
+  position: relative;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: var(--color-light-grey);
+  max-width: 300px;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  color: var(--color-bg-default);
+  padding: 8px;
+  font-size: 1rem;
+  background-color: transparent;
+}
+
+.searchInput::placeholder {
+  color: var(--color-bg-default);
+  opacity: 1;
+}
+
+.logoutButton {
+  margin-left: 16px;
+}
