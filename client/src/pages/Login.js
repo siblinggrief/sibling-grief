@@ -34,7 +34,7 @@ const Login = () => {
   return (
     <Box textAlign="center" mt={10}>
       <Typography variant="h4" gutterBottom>
-        Welcome to Sibling Grief
+        Welcome to Firefly Lives
       </Typography>
 
       <Stack spacing={2} mt={4} maxWidth="300px" margin="auto">

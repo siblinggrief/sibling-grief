@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    height: 100vh;
+    background-color: var(--color-bg-default);
+    color: var(--color-text-primary);
+  }
+  
+  .content {
+    flex-grow: 1;
+    padding: 24px;
+    overflow-y: auto;
+    background-color: var(--color-bg-paper);
+  }
+  

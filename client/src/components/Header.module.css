@@ -1,3 +1,12 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 16px;
+}
+
 .logoContainer {
   display: flex;
   align-items: center;
@@ -15,6 +24,12 @@
   flex-wrap: wrap;
   width: 100%;
   gap: 16px;
+}
+
+.mobileIcons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .navLinks {
@@ -35,17 +50,17 @@
 
 .navLink:hover {
   background-color: var(--color-hover);
-  color: var(--color-hover-text); /* Lighter greenish-grey on hover */
+  color: var(--color-hover-text);
 }
 
 .activeNav {
-  background-color: var(--color-active-bg); /* lighter grey */
+  background-color: var(--color-active-bg);
   color: var(--color-primary);
   font-weight: bold;
   border-radius: 25px;
   padding: 8px 16px;
   border: 2px solid var(--color-primary);
-  text-decoration: none; /* Remove underline on active */
+  text-decoration: none;
 }
 
 .searchWrapper {
@@ -62,17 +77,34 @@
 
 .searchInput {
   flex: 1;
-  color: var(--color-bg-default);
   padding: 8px;
   font-size: 1rem;
   background-color: transparent;
 }
 
 .searchInput::placeholder {
-  color: var(--color-bg-default);
-  opacity: 1;
+  color: var(--color-header);
 }
 
 .logoutButton {
   margin-left: 16px;
+}
+
+/* Mobile Specific Layouts */
+.mobileLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.mobileRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer {
+  width: 240px;
+  padding: 16px;
 }
