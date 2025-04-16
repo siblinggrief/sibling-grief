@@ -8,7 +8,7 @@ import { usePosts } from '../context/PostsContext';
 
 const Home = () => {
   const { user } = useAuth();
-  const { posts, fetchPosts, deletePost, loadingPosts } = usePosts();
+  const { posts, fetchPosts, deletePost, loadingPosts, setHasFetched } = usePosts();
 
   useEffect(() => {
     if (user) {
@@ -19,6 +19,11 @@ const Home = () => {
   const handlePostDeleted = (postId) => {
     deletePost(postId);
   };
+
+  const handleRefetchPosts = () => {
+    setHasFetched(false); // Reset the fetched state to allow refetching
+    fetchPosts();
+  }
 
   return (
     <>
@@ -34,7 +39,7 @@ const Home = () => {
       {user ? (
         <>
           <Box textAlign="center" mb={2}>
-            <AddNewPost onPostAdded={fetchPosts} />
+            <AddNewPost onPostAdded={handleRefetchPosts} />
           </Box>
 
           {loadingPosts ? (

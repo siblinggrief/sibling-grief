@@ -10,6 +10,7 @@ const AddNewPost = ({ onPostAdded }) => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [selectedTopics, setSelectedTopics] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const mediaRecorderRef = useRef(null);
@@ -94,7 +95,7 @@ const AddNewPost = ({ onPostAdded }) => {
       const response = await fetch(`${API_URL}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, audioUrl, audioDuration }),
+        body: JSON.stringify({ title, description, audioUrl, audioDuration, topics: selectedTopics, }),
       });
 
       if (!response.ok) throw new Error("Failed to add post");
@@ -124,6 +125,8 @@ const AddNewPost = ({ onPostAdded }) => {
         setTitle={setTitle}
         description={description}
         setDescription={setDescription}
+        selectedTopics={selectedTopics}
+        setSelectedTopics={setSelectedTopics}
         isSaving={isSaving}
         isRecording={isRecording}
         startRecording={startRecording}

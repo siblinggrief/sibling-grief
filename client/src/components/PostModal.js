@@ -1,7 +1,7 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, useTheme } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Typography, useTheme, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
 
-const PostModal = ({ open, onClose, title, setTitle, description, setDescription, isSaving, isRecording, startRecording, stopRecording, audioBlob, handleSubmit }) => {
+const PostModal = ({ open, onClose, title, setTitle, description, setDescription, selectedTopics, setSelectedTopics, isSaving, isRecording, startRecording, stopRecording, audioBlob, handleSubmit }) => {
   const theme = useTheme(); // Access the theme
 
   return (
@@ -31,6 +31,33 @@ const PostModal = ({ open, onClose, title, setTitle, description, setDescription
             input: { color: theme.palette.text.primary }, // Use theme text color
           }}
         />
+
+        <Box mt={2}>
+          <Typography variant="subtitle1" gutterBottom>
+            Select Topic:
+          </Typography>
+          <FormGroup row>
+            {["Memory", "Story", "Today", "Vent", "Achievement"].map((topic) => (
+              <FormControlLabel
+                key={topic}
+                control={
+                  <Checkbox
+                    checked={selectedTopics.includes(topic)}
+                    onChange={() => {
+                      setSelectedTopics((prev) =>
+                        prev.includes(topic)
+                          ? prev.filter((t) => t !== topic)
+                          : [...prev, topic]
+                      );
+                    }}
+                  />
+                }
+                label={topic}
+              />
+            ))}
+          </FormGroup>
+        </Box>
+
         <TextField
           label="Description"
           multiline

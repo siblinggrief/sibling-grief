@@ -18,6 +18,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
         alignItems: 'center',
         gap: 2,
         width: '100%',
+        mt: 2,
       }}
     >
       <Box
@@ -43,7 +44,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
             sx={{ fontWeight: 600, cursor: 'pointer' }}
             onClick={handleToggleVisibility}
           >
-            Listen to Audio
+            {isVisible ? `Hide Audio` : `Listen to Audio`}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
             {audioDuration}
@@ -51,18 +52,26 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
         </Box>
       </Box>
 
-      {isVisible && (
-        <Box sx={{ flex: 1 }}>
-          <audio
-            ref={audioRef}
-            controls
-            style={{ width: '100%' }}
-          >
-            <source src={audioUrl} type="audio/webm" />
-            Your browser does not support the audio element.
-          </audio>
-        </Box>
-      )}
+      <Box
+        sx={{
+          flex: 1,
+          height: '40px', // Set this to the height of the audio controls
+          overflow: 'hidden',
+        }}
+      >
+        <audio
+          ref={audioRef}
+          controls
+          style={{
+            width: '100%',
+            height: '40px', // Match this to the container's height
+            display: isVisible ? 'block' : 'none',
+          }}
+        >
+          <source src={audioUrl} type="audio/webm" />
+          Your browser does not support the audio element.
+        </audio>
+      </Box>
     </Box>
   );
 };

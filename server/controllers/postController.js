@@ -14,18 +14,16 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, description, audioUrl, audioDuration } = req.body;
+    const { title, description, audioUrl, audioDuration, topics } = req.body;
     if (!title) return res.status(400).json({ error: "Title is required" });
 
     const newPost = {
       title,
       description,
-      upVotesCount: 0,
-      downVotesCount: 0,
       audioUrl,
       audioDuration,
+      topics: Array.isArray(topics) ? topics : [],
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
     const docRef = await db.collection("posts").add(newPost);
