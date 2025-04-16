@@ -14,7 +14,7 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, description, audioUrl } = req.body;
+    const { title, description, audioUrl, audioDuration } = req.body;
     if (!title) return res.status(400).json({ error: "Title is required" });
 
     const newPost = {
@@ -23,6 +23,7 @@ const createPost = async (req, res) => {
       upVotesCount: 0,
       downVotesCount: 0,
       audioUrl,
+      audioDuration,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     };
@@ -73,8 +74,48 @@ const deletePost = async (req, res) => {
   }
 };
 
+const updateEmojiCount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { emoji } = req.body;
+
+    if (!emoji) {
+      return res.status(400).json({ error: "Emoji is required" });
+    }
+
+    const postRef = db.collection("posts").doc(id);
+    const postSnapshot = await postRef.get();
+
+    if (!postSnapshot.exists) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    const postData = postSnapshot.data();
+    const currentCounts = postData.counts || {};
+
+    // Increment the emoji count
+    const updatedCounts = {
+      ...currentCounts,
+      [emoji]: (currentCounts[emoji] || 0) + 1,
+    };
+
+    // Update Firestore document with new emoji counts
+    await postRef.update({
+      counts: updatedCounts,
+      updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    // Return updated post data
+    res.json({ id, updatedCounts });
+  } catch (error) {
+    console.error("Error updating emoji count:", error);
+    res.status(500).json({ error: "Failed to update emoji count" });
+  }
+};
+
 module.exports = {
   getPosts,
   createPost,
   deletePost,
+  updateEmojiCount,
 };

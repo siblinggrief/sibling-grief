@@ -70,7 +70,7 @@ const AddNewPost = ({ onPostAdded }) => {
       if (!response.ok) throw new Error("Cloudinary upload failed");
 
       const data = await response.json();
-      return data.secure_url;
+      return data;
     } catch (error) {
       console.error("Error uploading audio to Cloudinary:", error);
       return null;
@@ -81,13 +81,20 @@ const AddNewPost = ({ onPostAdded }) => {
     if (!title.trim()) return;
 
     setIsSaving(true);
-    let audioUrl = audioBlob ? await uploadAudioToCloudinary(audioBlob) : null;
+    let audioData = audioBlob ? await uploadAudioToCloudinary(audioBlob) : null;
+
+    let audioUrl = null;
+    let audioDuration = null;
+
+    if (audioData) {
+      ({ secure_url: audioUrl, duration: audioDuration } = audioData);
+    }
 
     try {
       const response = await fetch(`${API_URL}/api/posts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, audioUrl }),
+        body: JSON.stringify({ title, description, audioUrl, audioDuration }),
       });
 
       if (!response.ok) throw new Error("Failed to add post");

@@ -1,9 +1,9 @@
 /* Sidebar.module.css */
 
 .sidebar {
-    width: 240px;
+    width: 500px;
     padding: 16px;
-    background-color: var(--color-bg-paper);
+    background-color: var(--color-bg-default);
     border-right: 1px solid var(--color-light-grey);
     overflow-y: auto;
   }

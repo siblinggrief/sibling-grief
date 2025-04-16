@@ -1,38 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Post from "../components/Post";
-import AddNewPost from "../components/AddNewPost";
-import { Typography, Box, CircularProgress } from "@mui/material";
-import { useAuth } from "../context/AuthContext";
-import API_URL from "../config";
+// pages/Home.js
+import React, { useEffect } from 'react';
+import Post from '../components/Post';
+import AddNewPost from '../components/AddNewPost';
+import { Typography, Box, CircularProgress } from '@mui/material';
+import { useAuth } from '../context/AuthContext';
+import { usePosts } from '../context/PostsContext';
 
 const Home = () => {
   const { user } = useAuth();
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const handlePostDeleted = (postId) => {
-    setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
-  };
-
-  const fetchPosts = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API_URL}/api/posts`);
-      if (!response.ok) throw new Error("Failed to fetch posts");
-      const data = await response.json();
-      setPosts(data);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { posts, fetchPosts, deletePost, loadingPosts } = usePosts();
 
   useEffect(() => {
     if (user) {
       fetchPosts();
     }
-  }, [user]);
+  }, [user, fetchPosts]);
+
+  const handlePostDeleted = (postId) => {
+    deletePost(postId);
+  };
 
   return (
     <>
@@ -47,13 +33,11 @@ const Home = () => {
 
       {user ? (
         <>
-          {/* Add New Post */}
           <Box textAlign="center" mb={2}>
             <AddNewPost onPostAdded={fetchPosts} />
           </Box>
 
-          {/* Posts List */}
-          {loading ? (
+          {loadingPosts ? (
             <Box display="flex" justifyContent="center" mt={3}>
               <CircularProgress />
             </Box>
@@ -68,11 +52,9 @@ const Home = () => {
           )}
         </>
       ) : (
-        <>
-          <Typography variant="h6" textAlign="center" color="textSecondary" mt={4}>
-            Please log in to view and post content.
-          </Typography>
-        </>
+        <Typography variant="h6" textAlign="center" color="textSecondary" mt={4}>
+          Please log in to view and post content.
+        </Typography>
       )}
     </>
   );

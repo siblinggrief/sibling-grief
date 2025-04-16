@@ -10,7 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        const { displayName, photoURL, uid, email } = currentUser;
+        setUser({ displayName, photoURL, uid, email });
+      } else {
+        setUser(null);
+      }
       setAuthLoading(false);
     });
 
@@ -24,5 +29,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook for easy access
 export const useAuth = () => useContext(AuthContext);

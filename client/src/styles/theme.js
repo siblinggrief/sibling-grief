@@ -18,6 +18,7 @@ const theme = createTheme({
     text: {
       primary: "#FFFFFF",
       secondary: "#A5D6A7", // Light greenish-grey
+      black: "#000000",
     },
     action: {
       hover: "#355e42",           // Dark green-grey

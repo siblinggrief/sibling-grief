@@ -17,6 +17,7 @@ import Layout from "./components/Layout";
 import Subscribe from "./pages/Subscribe"; 
 import theme from "./styles/theme";
 import "./styles/theme-variables.css";
+import { PostsProvider } from "./context/PostsContext";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -36,28 +37,30 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <AuthProvider>
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/to-share" element={<ToShare />} />
-              <Route path="/to-care" element={<ToCare />} />
-              <Route path="/to-prepare" element={<ToPrepare />} />
-              <Route path="/self-care" element={<SelfCare />} />
-              <Route path="/tag/:tagName" element={<TagPage />} />
-              <Route path="/subscribe" element={<Subscribe />} />
+        <PostsProvider>
+          <Router>
+            <Layout>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/to-share" element={<ToShare />} />
+                <Route path="/to-care" element={<ToCare />} />
+                <Route path="/to-prepare" element={<ToPrepare />} />
+                <Route path="/self-care" element={<SelfCare />} />
+                <Route path="/tag/:tagName" element={<TagPage />} />
+                <Route path="/subscribe" element={<Subscribe />} />
 
-              {user ? (
-                <Route path="/" element={<Home />} />
-              ) : (
-                <Route path="/" element={<Navigate to="/login" />} />
-              )}
+                {user ? (
+                  <Route path="/" element={<Home />} />
+                ) : (
+                  <Route path="/" element={<Navigate to="/login" />} />
+                )}
 
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </Layout>
-        </Router>
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Layout>
+          </Router>
+        </PostsProvider>
       </AuthProvider>
     </ThemeProvider>
   );
