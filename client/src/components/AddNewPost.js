@@ -21,12 +21,19 @@ const AddNewPost = ({ onPostAdded }) => {
   const mediaRecorderRef = useRef(null);
   const [isRecording, setIsRecording] = useState(false);
 
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setAudioBlob(null);
+    setOpen(true);
+  }
+
   const handleClose = () => {
+    stopRecording();
     setOpen(false);
     setTitle("");
     setDescription("");
+    setSelectedTopics([]);
     setAudioBlob(null);
+    setFormError("");
   };
 
   const startRecording = async () => {
@@ -98,6 +105,11 @@ const AddNewPost = ({ onPostAdded }) => {
 
   if (description.trim() && audioBlob) {
     setFormError("Please share either a description or an audio, not both.");
+    return;
+  }
+
+  if (selectedTopics.length === 0) {
+    setFormError("Please select at least one topic.");
     return;
   }
 

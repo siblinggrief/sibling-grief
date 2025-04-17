@@ -14,7 +14,7 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, description, audioUrl, audioDuration, topics, displayName, photoUrl } = req.body;
+    const { title, description, audioUrl, audioDuration, topics, displayName, photoURL } = req.body;
     if (!title) return res.status(400).json({ error: "Title is required" });
 
     if (!description && !audioUrl) {
@@ -28,7 +28,7 @@ const createPost = async (req, res) => {
       audioDuration,
       topics: Array.isArray(topics) ? topics : [],
       displayName,
-      photoUrl,
+      photoURL,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 

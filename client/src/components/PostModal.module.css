@@ -53,8 +53,9 @@
   }
   
   .recordButton {
-    background-color: #ffeb3b;
+    background-color: #ffeb3b !important;
     color: #0d47a1;
+    border: 1px solid var(--record-bg, #ffeb3b) !important;
     border-radius: 20px;
     padding: 8px 16px;
     font-weight: 600;
@@ -63,7 +64,6 @@
   .recordButton:hover {
     background-color: #fdd835;
   }
-  
   .actions {
     display: flex;
     justify-content: flex-end;
@@ -72,48 +72,44 @@
   }
   
   .borderButton {
-    border: 1px solid var(--color-text-black, #000000);
     border-radius: 12px;
     padding: 6px 16px;
     font-weight: 600;
     background: transparent;
-    color: var(--color-text-black, #000000);
+    color: var(--color-text-black);
+    border: 1px solid var(--color-error) !important;
+    transition: all 0.3s ease;
   }
   
- /* Style for enabled state (matching the Add New Post button's color) */
-.submitButtonEnabled {
-    background-color: var(--color-primary);  /* Primary color */
-    color: #000000; /* Dark text color */
-    border-radius: 12px;
-    padding: 6px 16px;
-    font-weight: 600;
-    border: 1px solid var(--color-text-black, #000000);
-    transition: background-color 0.3s ease;
+  /* Enabled state */
+  .submitButtonEnabled {
+    background-color: var(--color-primary);
+    color: var(--color-text-black);
+    border: 1px solid var(--color-button-border, var(--color-text-black));
   }
   
   .submitButtonEnabled:hover {
-    background-color: var(--color-primary-dark); /* Darker primary color on hover */
-    color: #000000; /* Ensure dark grey text on hover */
+    background-color: var(--color-secondary); /* darker green hover */
+    color: var(--color-text-black);
   }
   
-  /* Style for disabled state (grey) */
+  /* Disabled state */
   .submitButtonDisabled {
-    background-color: #9e9e9e; /* Grey */
-    color: #ffffff;
-    border-radius: 12px;
-    padding: 6px 16px;
-    font-weight: 600;
-    border: 1px solid var(--color-text-black, #000000);
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled);
+    border: 1px solid var(--color-button-border, var(--color-text-black));
   }
   
   .submitButtonDisabled:hover {
-    background-color: #bdbdbd; /* Darker grey on hover */
-    color: #000000; /* Dark grey text on hover */
+    background-color: #555555;
+    color: var(--color-text-black);
+    border: 1px solid var(--color-button-border, var(--color-text-black));
   }
   
   .error {
     color: var(--color-error-red);
     margin-bottom: 12px;
     font-size: 0.9rem;
-    text-align: center;
+    margin-left: 192px;
   }
+  

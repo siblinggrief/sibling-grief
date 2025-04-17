@@ -20,9 +20,9 @@ import CustomAudioPlayer from "./CustomAudioPlayer"; // Adjust the path if neces
 import { Timestamp } from "firebase/firestore";
 
 const Post = ({ post, onPostDeleted }) => {
-  const { displayName, photoUrl } = post;
+  const { displayName, photoURL } = post;
   const theme = useTheme();
-
+  console.log(photoURL)
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [counts, setCounts] = useState(post.counts || {});
@@ -108,7 +108,7 @@ const Post = ({ post, onPostDeleted }) => {
           <Stack direction="row" justifyContent="space-between" alignItems="center">
             <Stack direction="row" alignItems="center" spacing={1}>
               <Avatar
-                src={photoUrl || ""}
+                src={photoURL || ""}
                 alt={displayName || "Anonymous"}
                 sx={{ width: 32, height: 32 }}
               />

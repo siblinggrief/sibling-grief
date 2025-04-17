@@ -37,7 +37,8 @@ const PostModal = ({
   setFormError,
 }) => {
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user: { displayName, photoURL } } = useAuth();
+
   const [voiceOnly, setVoiceOnly] = useState(false);
 
   const handleVoiceToggle = (e) => {
@@ -75,8 +76,8 @@ const PostModal = ({
           <IconButton onClick={onClose}>
             <ArrowBack />
           </IconButton>
-          {user?.photoURL && <Avatar src={user.photoURL} />}
-          <Typography variant="subtitle1">{user?.displayName || "User"}</Typography>
+          {photoURL && <Avatar src={photoURL} referrerPolicy="no-referrer"/>}
+          <Typography variant="subtitle1">{displayName || "User"}</Typography>
         </Box>
 
         <Typography variant="h6" mt={2}>Share your story</Typography>
@@ -220,7 +221,7 @@ const PostModal = ({
             className={styles.borderButton}
             sx={{
               color: theme.palette.text.black,
-              backgroundColor: theme.palette.background.paper, // Default light grey background
+              backgroundColor: theme.palette.action.disabled, // Default light grey background
               "&:hover": {
                 backgroundColor: theme.palette.grey[200], // Light grey background on hover
               },
