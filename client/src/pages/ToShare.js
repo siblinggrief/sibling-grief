@@ -27,15 +27,6 @@ const ToShare = () => {
 
   return (
     <>
-      <Box textAlign="center" my={4}>
-        <Typography variant="h4" gutterBottom>
-          Welcome to Firefly Lives
-        </Typography>
-        <Typography variant="body1" color="textSecondary">
-          Share, connect, and heal through voice and text with others who understand sibling loss.
-        </Typography>
-      </Box>
-
       {user ? (
         <>
           <Box textAlign="center" mb={2}>

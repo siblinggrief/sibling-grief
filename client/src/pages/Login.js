@@ -32,7 +32,7 @@ const Login = () => {
 
   return (
     <Box textAlign="center" mt={10}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" mb={5} gutterBottom>
         Welcome to Firefly Lives
       </Typography>
 
