@@ -1,55 +1,134 @@
-import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, Typography, useTheme, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  TextField,
+  Box,
+  Typography,
+  useTheme,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  IconButton,
+  Avatar,
+  Button
+} from "@mui/material";
+import { ArrowBack, Mic } from "@mui/icons-material";
+import { useAuth } from "../context/AuthContext";
+import styles from "./PostModal.module.css";
 
-const PostModal = ({ open, onClose, title, setTitle, description, setDescription, selectedTopics, setSelectedTopics, isSaving, isRecording, startRecording, stopRecording, audioBlob, handleSubmit }) => {
-  const theme = useTheme(); // Access the theme
+const PostModal = ({
+  open,
+  onClose,
+  title,
+  setTitle,
+  description,
+  setDescription,
+  selectedTopics,
+  setSelectedTopics,
+  isSaving,
+  isRecording,
+  startRecording,
+  stopRecording,
+  audioBlob,
+  setAudioBlob,
+  handleSubmit,
+  formError,
+  setFormError,
+}) => {
+  const theme = useTheme();
+  const { user } = useAuth();
+  const [voiceOnly, setVoiceOnly] = useState(false);
+
+  const handleVoiceToggle = (e) => {
+    setFormError(""); // Clear any previous error message
+    const isChecked = e.target.checked;
+    setVoiceOnly(isChecked);
+  
+    if (isChecked) {
+      setDescription(""); // Clear text when switching to voice
+    } else {
+      if (audioBlob) {
+        URL.revokeObjectURL(audioBlob);
+      }
+      if (typeof setAudioBlob === "function") {
+        setAudioBlob(null); // Clear audio when switching back to text
+      }
+    }
+  };
 
   return (
     <Dialog
       open={open}
       onClose={onClose}
-      fullWidth
+      maxWidth="xl"
       sx={{
         "& .MuiDialog-paper": {
-          backgroundColor: theme.palette.background.default, // Use theme background
-          color: theme.palette.text.primary, // Use theme text color
+          backgroundColor: "#f5f5f5",
+          color: "black",
         },
       }}
     >
-      <DialogTitle>Add New Post</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Post Title"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          sx={{
-            input: { color: theme.palette.text.primary }, // Use theme text color
-          }}
-        />
+      <DialogContent className={styles.modalPaper}>
+        {/* Header */}
+        <Box className={styles.header}>
+          <IconButton onClick={onClose}>
+            <ArrowBack />
+          </IconButton>
+          {user?.photoURL && <Avatar src={user.photoURL} />}
+          <Typography variant="subtitle1">{user?.displayName || "User"}</Typography>
+        </Box>
 
-        <Box mt={2}>
-          <Typography variant="subtitle1" gutterBottom>
-            Select Topic:
-          </Typography>
-          <FormGroup row>
+        <Typography variant="h6" mt={2}>Share your story</Typography>
+
+        {/* Title */}
+        <Box className={styles.twoColumn}>
+          <Typography className={styles.label}>Title:</Typography>
+          <TextField
+            fullWidth
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={styles.inputBox}
+            variant="outlined"
+            size="small"
+            slotProps={{
+              input: {
+                style: {
+                  color: theme.palette.text.black, // Use black for typed text
+                },
+              },
+              notchedOutline: {
+                style: {
+                  borderColor: theme.palette.text.black, // Default border
+                },
+              },
+            }}
+            onFocus={(e) => {
+              e.target.parentElement.style.borderColor = theme.palette.text.black;
+            }}
+            onBlur={(e) => {
+              e.target.parentElement.style.borderColor = ""; // Reset
+            }}
+          />
+        </Box>
+
+        {/* Topics */}
+        <Box className={styles.twoColumn}>
+          <Typography className={styles.label}>Select Topics:</Typography>
+          <FormGroup row className={styles.checkboxGroup}>
             {["Memory", "Story", "Today", "Vent", "Achievement"].map((topic) => (
               <FormControlLabel
                 key={topic}
                 control={
                   <Checkbox
                     checked={selectedTopics.includes(topic)}
-                    onChange={() => {
+                    onChange={() =>
                       setSelectedTopics((prev) =>
                         prev.includes(topic)
                           ? prev.filter((t) => t !== topic)
                           : [...prev, topic]
-                      );
-                    }}
+                      )
+                    }
                   />
                 }
                 label={topic}
@@ -58,48 +137,109 @@ const PostModal = ({ open, onClose, title, setTitle, description, setDescription
           </FormGroup>
         </Box>
 
-        <TextField
-          label="Description"
-          multiline
-          rows={4}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-
-        {/* Recording Button */}
-        <Box mt={2} textAlign="center">
-          {isRecording ? (
-            <Button onClick={stopRecording} variant="contained" color="secondary">
-              Stop Recording
-            </Button>
-          ) : (
-            <Button onClick={startRecording} variant="contained" color="primary">
-              Start Recording
-            </Button>
-          )}
+        {/* Voice Only Toggle */}
+        <Box className={styles.twoColumn}>
+          <Typography className={styles.label}>Do you want to voice record instead of text?</Typography>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={voiceOnly}
+                onChange={handleVoiceToggle}
+              />
+            }
+            label="Yes"
+          />
         </Box>
 
-        {audioBlob && (
-          <Box mt={2} textAlign="center" sx={{ color: theme.palette.success.main }}>
-            Audio recorded. Ready to upload.
+        {/* Description */}
+        {!voiceOnly && (
+          <Box className={styles.twoColumn}>
+            <Typography className={styles.label}>What would you like to share?</Typography>
+            <TextField
+              multiline
+              minRows={4}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              fullWidth
+              className={styles.inputBox}
+              slotProps={{
+                input: {
+                  style: {
+                    color: theme.palette.text.black, // Use black for typed text
+                  },
+                },
+                notchedOutline: {
+                  style: {
+                    borderColor: theme.palette.text.black, // Default border
+                  },
+                },
+              }}
+              onFocus={(e) => {
+                e.target.parentElement.style.borderColor = theme.palette.text.black;
+              }}
+              onBlur={(e) => {
+                e.target.parentElement.style.borderColor = ""; // Reset
+              }}
+            />
           </Box>
         )}
-      </DialogContent>
 
-      <DialogActions>
-        <Button onClick={onClose} disabled={isSaving} sx={{ color: theme.palette.error.light }}>
-          Cancel
-        </Button>
+        {/* Recording Section */}
+        {voiceOnly && (
+          <Box className={styles.twoColumn}>
+            <Typography className={styles.label}>What would you like to share?</Typography>
+            <Box>
+              <Button
+                onClick={isRecording ? stopRecording : startRecording}
+                className={styles.recordButton}
+                startIcon={<Mic />}
+              >
+                {isRecording ? "Stop Recording" : "Start Recording"}
+              </Button>
+              {isRecording && (
+                <Typography mt={1} variant="body2" color="secondary">
+                  Recording in progress...
+                </Typography>
+              )}
+              {audioBlob && (
+                <Typography mt={1} variant="body2" color="success.main">
+                  Audio recorded. Ready to upload.
+                </Typography>
+              )}
+            </Box>
+          </Box>
+        )}
+
+        {formError && <div className={styles.error}>{formError}</div>}
+
+        {/* Action Buttons */}
+        <Box className={styles.actions}>
         <Button
-          variant="darkContained"
-          onClick={handleSubmit}
-          disabled={!title.trim() || isSaving || audioBlob === null}
-        >
-          {isSaving ? "Saving..." : "Save"}
-        </Button>
-      </DialogActions>
+            onClick={onClose}
+            disabled={isSaving}
+            className={styles.borderButton}
+            sx={{
+              color: theme.palette.text.black,
+              backgroundColor: theme.palette.background.paper, // Default light grey background
+              "&:hover": {
+                backgroundColor: theme.palette.grey[200], // Light grey background on hover
+              },
+              "&.Mui-disabled": {
+                backgroundColor: theme.palette.grey[300], // Disabled state background color
+              }
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={!title.trim() || isSaving || (voiceOnly && !audioBlob)}
+            className={`${styles.borderButton} ${!title.trim() || isSaving || (voiceOnly && !audioBlob) ? styles.submitButtonDisabled : styles.submitButtonEnabled}`}
+          >
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
+        </Box>
+      </DialogContent>
     </Dialog>
   );
 };

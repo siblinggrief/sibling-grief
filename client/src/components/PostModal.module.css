@@ -1,0 +1,119 @@
+.modalPaper {
+    background-color: var(--color-light-grey); /* Very light grey */
+    color: var(--color-text-black, #000000);
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .twoColumn {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  
+  .label {
+    width: 180px;
+    font-weight: 600;
+    padding-top: 8px;
+    color: var(--color-text-black, #000000);
+  }
+  
+  .inputBox {
+    background-color: var(--color-light-grey); /* Match modal */
+    border-radius: 6px;
+    flex: 1;
+    color: var(--color-text-black, #000000);
+    border: 1px solid var(--color-bg-default);
+    transition: border-color 0.2s ease;
+  }
+  
+  /* This keeps the TextField filled area light */
+  .inputBox input,
+  .inputBox textarea {
+    background-color: var(--color-light-grey); 
+    color: var(--color-text-black, #000000);
+  }
+  
+  .inputBox:hover,
+  .inputBox:focus-within {
+    border-color: var(--color-text-black, #000000);
+  }
+  
+  .checkboxGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .recordButton {
+    background-color: #ffeb3b;
+    color: #0d47a1;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 600;
+  }
+  
+  .recordButton:hover {
+    background-color: #fdd835;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .borderButton {
+    border: 1px solid var(--color-text-black, #000000);
+    border-radius: 12px;
+    padding: 6px 16px;
+    font-weight: 600;
+    background: transparent;
+    color: var(--color-text-black, #000000);
+  }
+  
+ /* Style for enabled state (matching the Add New Post button's color) */
+.submitButtonEnabled {
+    background-color: var(--color-primary);  /* Primary color */
+    color: #000000; /* Dark text color */
+    border-radius: 12px;
+    padding: 6px 16px;
+    font-weight: 600;
+    border: 1px solid var(--color-text-black, #000000);
+    transition: background-color 0.3s ease;
+  }
+  
+  .submitButtonEnabled:hover {
+    background-color: var(--color-primary-dark); /* Darker primary color on hover */
+    color: #000000; /* Ensure dark grey text on hover */
+  }
+  
+  /* Style for disabled state (grey) */
+  .submitButtonDisabled {
+    background-color: #9e9e9e; /* Grey */
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 6px 16px;
+    font-weight: 600;
+    border: 1px solid var(--color-text-black, #000000);
+  }
+  
+  .submitButtonDisabled:hover {
+    background-color: #bdbdbd; /* Darker grey on hover */
+    color: #000000; /* Dark grey text on hover */
+  }
+  
+  .error {
+    color: var(--color-error-red);
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    text-align: center;
+  }

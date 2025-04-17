@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import {
   Card,
@@ -13,7 +13,6 @@ import {
 import EmojiSelector from "./EmojiSelector";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
-import { useAuth } from "../context/AuthContext";
 import DeleteDialog from "./DeleteDialog";
 import API_URL from "../config";
 import "firebase/compat/firestore";
@@ -21,7 +20,7 @@ import CustomAudioPlayer from "./CustomAudioPlayer"; // Adjust the path if neces
 import { Timestamp } from "firebase/firestore";
 
 const Post = ({ post, onPostDeleted }) => {
-  const { user: { displayName, photoURL } } = useAuth();
+  const { displayName, photoURL } = post;
   const theme = useTheme();
 
   const [openDialog, setOpenDialog] = useState(false);

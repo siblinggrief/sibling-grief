@@ -47,7 +47,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
             {isVisible ? `Hide Audio` : `Listen to Audio`}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            {audioDuration}
+            {audioDuration} {`s`}
           </Typography>
         </Box>
       </Box>

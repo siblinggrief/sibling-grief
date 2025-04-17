@@ -14,8 +14,12 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, description, audioUrl, audioDuration, topics } = req.body;
+    const { title, description, audioUrl, audioDuration, topics, displayName, photoUrl } = req.body;
     if (!title) return res.status(400).json({ error: "Title is required" });
+
+    if (!description && !audioUrl) {
+      return res.status(400).json({ error: "Post must have either a description or an audio recording." });
+    }
 
     const newPost = {
       title,
@@ -23,14 +27,20 @@ const createPost = async (req, res) => {
       audioUrl,
       audioDuration,
       topics: Array.isArray(topics) ? topics : [],
+      displayName,
+      photoUrl,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
+
+    Object.keys(newPost).forEach(
+      (key) => newPost[key] === undefined && delete newPost[key]
+    );
 
     const docRef = await db.collection("posts").add(newPost);
     res.json({ id: docRef.id, ...newPost });
   } catch (error) {
-    console.error("Error creating post:", error);
-    res.status(500).json({ error: "Failed to create post" });
+    console.error("Error creating post:", error.message, error.stack);
+    res.status(500).json({ error: "Failed to create post", details: error.message });
   }
 };
 

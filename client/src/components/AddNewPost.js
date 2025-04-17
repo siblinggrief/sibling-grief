@@ -2,12 +2,17 @@ import React, { useState, useRef } from "react";
 import { Box, Button } from "@mui/material";
 import PostModal from "./PostModal";
 import API_URL from "../config";
+import { useAuth } from "../context/AuthContext";
 
 const CLOUDINARY_UPLOAD_URL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
 const AddNewPost = ({ onPostAdded }) => {
+  const { user: { displayName, photoURL } } = useAuth();
+
   const [open, setOpen] = useState(false);
+  const [formError, setFormError] = useState("");
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedTopics, setSelectedTopics] = useState([]);
@@ -79,35 +84,67 @@ const AddNewPost = ({ onPostAdded }) => {
   };
 
   const handleSubmit = async () => {
-    if (!title.trim()) return;
+  setFormError(""); // Clear old errors
 
-    setIsSaving(true);
-    let audioData = audioBlob ? await uploadAudioToCloudinary(audioBlob) : null;
+  if (!title.trim()) {
+    setFormError("Title is required.");
+    return;
+  }
 
-    let audioUrl = null;
-    let audioDuration = null;
+  if (!description.trim() && !audioBlob) {
+    setFormError("Please provide either a description or record audio.");
+    return;
+  }
 
+  if (description.trim() && audioBlob) {
+    setFormError("Please share either a description or an audio, not both.");
+    return;
+  }
+
+  setIsSaving(true);
+
+  let audioUrl = null;
+  let audioDuration = null;
+
+  if (audioBlob) {
+    const audioData = await uploadAudioToCloudinary(audioBlob);
     if (audioData) {
       ({ secure_url: audioUrl, duration: audioDuration } = audioData);
     }
+  }
 
-    try {
-      const response = await fetch(`${API_URL}/api/posts`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description, audioUrl, audioDuration, topics: selectedTopics, }),
-      });
+  try {
+    const payload = {
+      title,
+      topics: selectedTopics,
+      displayName,
+      photoURL,
+    };
 
-      if (!response.ok) throw new Error("Failed to add post");
-
-      onPostAdded();
-      handleClose();
-    } catch (error) {
-      console.error("Error adding post:", error);
-    } finally {
-      setIsSaving(false);
+    if (description.trim()) {
+      payload.description = description.trim();
+    } else if (audioUrl) {
+      payload.audioUrl = audioUrl;
+      payload.audioDuration = audioDuration;
     }
-  };
+
+    const response = await fetch(`${API_URL}/api/posts`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error("Failed to add post");
+
+    onPostAdded();
+    handleClose();
+  } catch (error) {
+    console.error("Error adding post:", error);
+    setFormError("Something went wrong. Please try again.");
+  } finally {
+    setIsSaving(false);
+  }
+};
 
   return (
     <>
@@ -132,7 +169,10 @@ const AddNewPost = ({ onPostAdded }) => {
         startRecording={startRecording}
         stopRecording={stopRecording}
         audioBlob={audioBlob}
+        setAudioBlob={setAudioBlob}
         handleSubmit={handleSubmit}
+        formError={formError}
+        setFormError={setFormError}
       />
     </>
   );
