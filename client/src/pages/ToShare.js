@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
-import { Typography, Box, CircularProgress, IconButton } from '@mui/material';
+import { Typography, Box, CircularProgress } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
 import SortDropdown from '../components/SortDropdown';
-import ToggleButton from '@mui/icons-material/ToggleOff';
+import Toggle from '../components/Toggle';
 
 const ToShare = () => {
   const { user } = useAuth();
@@ -54,9 +54,7 @@ const ToShare = () => {
           >
             <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
 
-            <IconButton>
-              <ToggleButton />
-            </IconButton>
+            <Toggle />
 
             <AddNewPost onPostAdded={handleRefetchPosts} />
           </Box>
