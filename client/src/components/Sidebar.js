@@ -10,6 +10,14 @@ import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
     const { user } = useAuth();
+    const sidebarTopics = [
+      { label: "Memories", tag: "Memory" },
+      { label: "Stories", tag: "Story" },
+      { label: "Venting", tag: "Vent" },
+      { label: "Achievements", tag: "Achievement" },
+      { label: "The Day", tag: "Today" },
+    ];    
+    
   return (
     <Box className={styles.sidebar}>
       <nav className={styles.nav}>
@@ -49,41 +57,21 @@ const Sidebar = () => {
           </ListItem>
         </NavLink>
 
-      {user && 
-       <>
-        <div className={styles.sectionHeading}>Topics</div>
-          <NavLink
-            to="/tag/memories"
-            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-          >
-            Memories
-          </NavLink>
-          <NavLink
-            to="/tag/stories"
-            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-          >
-            Stories
-          </NavLink>
-          <NavLink
-            to="/tag/venting"
-            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-          >
-            Venting
-          </NavLink>
-          <NavLink
-            to="/tag/achievements"
-            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-          >
-            Achievements
-          </NavLink>
-          <NavLink
-            to="/tag/the-day"
-            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-          >
-            The day
-          </NavLink>
+        {user && (
+        <>
+          <div className={styles.sectionHeading}>Topics</div>
+          {sidebarTopics.map(({ label, tag }) => (
+            <NavLink
+              key={tag}
+              to={`/tag/${tag}`}
+              className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
+            >
+              {label}
+            </NavLink>
+          ))}
         </>
-        }
+      )}
+      
         <div className={styles.sectionHeading}>Resources</div>
         <NavLink
           to="https://example.com/resource1"

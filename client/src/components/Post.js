@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from 'react-router-dom'; 
 import { useTheme } from "@mui/material/styles";
 import {
   Card,
@@ -236,12 +237,12 @@ const Post = ({ post, onPostDeleted }) => {
               </Typography>
 
               {post.topics?.map((topic, index) => (
-                <Chip
+                  <Chip
                   key={index}
                   label={topic}
                   variant="outlined"
-                  component="a"
-                  href={`/tag/${topic}`}
+                  component={Link}
+                  to={`/tag/${topic}`}
                   sx={{
                     color: theme.palette.text.primary,
                     "&:hover": {
