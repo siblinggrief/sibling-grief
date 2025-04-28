@@ -17,13 +17,12 @@ import ShareIcon from "@mui/icons-material/Share";
 import DeleteDialog from "./DeleteDialog";
 import API_URL from "../config";
 import "firebase/compat/firestore";
-import CustomAudioPlayer from "./CustomAudioPlayer"; // Adjust the path if necessary
+import CustomAudioPlayer from "./CustomAudioPlayer";
 import { Timestamp } from "firebase/firestore";
 
 const Post = ({ post, onPostDeleted }) => {
   const { displayName, photoURL } = post;
   const theme = useTheme();
-  console.log(photoURL)
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [counts, setCounts] = useState(post.counts || {});

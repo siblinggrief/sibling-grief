@@ -1,14 +1,30 @@
-// pages/ToShare.js
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
-import { Typography, Box, CircularProgress } from '@mui/material';
+import { Typography, Box, CircularProgress, IconButton } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 import { usePosts } from '../context/PostsContext';
+import SortDropdown from '../components/SortDropdown';
+import ToggleButton from '@mui/icons-material/ToggleOff';
 
 const ToShare = () => {
   const { user } = useAuth();
-  const { posts, fetchPosts, deletePost, loadingPosts, setHasFetched } = usePosts();
+  const { posts, fetchPosts, deletePost, loading, setHasFetched } = usePosts();
+  
+  const [sortOption, setSortOption] = useState('newest');
+
+  // Memoize the sorted posts to optimize performance and avoid unnecessary re-renders
+  const sortedPosts = useMemo(() => {
+    const sortedArray = [...posts];
+    if (sortOption === 'newest') {
+      return sortedArray.sort((a, b) => b.createdAt._seconds - a.createdAt._seconds);
+    }
+    if (sortOption === 'oldest') {
+      return sortedArray.sort((a, b) => a.createdAt._seconds - b.createdAt._seconds);
+    }
+    // If more sort options are added in the future, handle them here
+    return sortedArray;
+  }, [posts, sortOption]);
 
   useEffect(() => {
     if (user) {
@@ -23,22 +39,34 @@ const ToShare = () => {
   const handleRefetchPosts = () => {
     setHasFetched(false); // Reset the fetched state to allow refetching
     fetchPosts();
-  }
+  };
 
   return (
     <>
       {user ? (
         <>
-          <Box textAlign="center" mb={2}>
+          {/* Row for Sort Dropdown, Theme Toggle, and Add New Post Button */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb={2}
+          >
+            <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
+
+            <IconButton>
+              <ToggleButton />
+            </IconButton>
+
             <AddNewPost onPostAdded={handleRefetchPosts} />
           </Box>
 
-          {loadingPosts ? (
+          {loading ? (
             <Box display="flex" justifyContent="center" mt={3}>
               <CircularProgress />
             </Box>
-          ) : posts.length > 0 ? (
-            posts.map((post) => (
+          ) : sortedPosts.length > 0 ? (
+            sortedPosts.map((post) => (
               <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
             ))
           ) : (
