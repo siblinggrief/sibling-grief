@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { usePosts } from "../context/PostsContext";
 import { Link } from 'react-router-dom'; 
 import { useTheme } from "@mui/material/styles";
 import {
@@ -25,10 +26,10 @@ const Post = ({ post, onPostDeleted }) => {
   const theme = useTheme();
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [counts, setCounts] = useState(post.counts || {});
-  const [customEmojis, setCustomEmojis] = useState(post.customEmojis || []);
   const [showPicker, setShowPicker] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const { updateEmojiCount } = usePosts();
 
   const { _seconds, _nanoseconds } = post.createdAt;
   const timestamp = new Timestamp(_seconds, _nanoseconds);
@@ -36,28 +37,11 @@ const Post = ({ post, onPostDeleted }) => {
 
   const handleEmojiSelect = (emoji) => {
     setShowPicker(false);
-    setCustomEmojis((prev) => [...prev, emoji]);
-    updateFirestore(emoji);
+    updateEmojiCount(post.id, emoji);
   };
 
   const handleEmojiClick = (emoji) => {
-    updateFirestore(emoji);
-  };
-
-  const updateFirestore = async (emoji) => {
-    const emojiKey = emoji; // Assuming emoji is a string like '❤️'
-    const updatedCounts = { ...counts, [emojiKey]: (counts[emojiKey] || 0) + 1 };
-    setCounts(updatedCounts);
-
-    try {
-      await fetch(`${API_URL}/api/posts/${post.id}/updateEmoji`, {
-        method: "POST",
-        body: JSON.stringify({ emoji: emojiKey }),
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (error) {
-      console.error("Error updating Firestore:", error);
-    }
+    updateEmojiCount(post.id, emoji);
   };
 
   const handleDeletePost = async () => {
@@ -176,7 +160,6 @@ const Post = ({ post, onPostDeleted }) => {
             alignItems="center"
             sx={{ marginTop: 2, flexWrap: "wrap", gap: 1 }}
           >
-
             <Box sx={{ position: 'relative' }}>
               {/* Emoji Picker */}
               {showPicker && (
@@ -204,12 +187,12 @@ const Post = ({ post, onPostDeleted }) => {
                   flexWrap: 'wrap',
                 }}
               >
-                {Object.entries(counts).map(([emoji, count]) => (
+                {post.counts && Object.entries(post.counts).map(([emoji, count]) => (
                   <span key={emoji} onClick={() => handleEmojiClick(emoji)} style={{ cursor: 'pointer' }}>
                     {emoji} {count}
                   </span>
                 ))}
-          
+
                 <Typography
                   variant="subtitle2"
                   sx={{ fontWeight: 200, cursor: 'pointer' }}
@@ -236,7 +219,7 @@ const Post = ({ post, onPostDeleted }) => {
               </Typography>
 
               {post.topics?.map((topic, index) => (
-                  <Chip
+                <Chip
                   key={index}
                   label={topic}
                   variant="outlined"

@@ -1,5 +1,5 @@
 // context/PostsContext.js
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import API_URL from "../config";
 
 const PostsContext = createContext();
@@ -25,12 +25,28 @@ export const PostsProvider = ({ children }) => {
     }
   };
 
+  const updateEmojiCount = (postId, emoji) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === postId
+          ? {
+              ...post,
+              counts: {
+                ...post.counts,
+                [emoji]: (post.counts[emoji] || 0) + 1,
+              },
+            }
+          : post
+      )
+    );
+  };
+
   const deletePost = (postId) => {
     setPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
   };
 
   return (
-    <PostsContext.Provider value={{ posts, fetchPosts, deletePost, loading, setHasFetched }}>
+    <PostsContext.Provider value={{ posts, fetchPosts, deletePost, loading, setHasFetched, updateEmojiCount }}>
       {children}
     </PostsContext.Provider>
   );
