@@ -27,13 +27,13 @@ export const PostsProvider = ({ children }) => {
 
   const updateEmojiCount = (postId, emoji) => {
     setPosts((prevPosts) =>
-      prevPosts.map((post) =>
+      prevPosts?.map((post) =>
         post.id === postId
           ? {
               ...post,
               counts: {
-                ...post.counts,
-                [emoji]: (post.counts[emoji] || 0) + 1,
+                ...(post.counts || {}),
+                [emoji]: ((post.counts?.[emoji] || 0) + 1),
               },
             }
           : post
