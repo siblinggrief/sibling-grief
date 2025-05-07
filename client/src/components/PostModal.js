@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +38,9 @@ const PostModal = ({
   setFormError,
 }) => {
   const theme = useTheme();
-  const { user: { displayName, photoURL } } = useAuth();
+  const { user } = useAuth();
+  const displayName = user?.displayName;
+  const photoURL = user?.photoURL;
 
   const [voiceOnly, setVoiceOnly] = useState(false);
 
@@ -211,7 +214,13 @@ const PostModal = ({
           </Box>
         )}
 
-        {formError && <div className={styles.error}>{formError}</div>}
+        {formError && <div className={styles.error}>{formError.includes("log in") ? (
+                        <>
+                          Please <Link to="/login">log in</Link> to share a post.
+                        </>
+                      ) : (
+                        formError
+                      )}</div>}
 
         {/* Action Buttons */}
         <Box className={styles.actions}>

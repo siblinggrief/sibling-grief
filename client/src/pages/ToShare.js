@@ -27,10 +27,8 @@ const ToShare = () => {
   }, [posts, sortOption]);
 
   useEffect(() => {
-    if (user) {
-      fetchPosts();
-    }
-  }, [user, fetchPosts]);
+    fetchPosts();
+  }, [fetchPosts]);
 
   const handlePostDeleted = (postId) => {
     deletePost(postId);
@@ -43,39 +41,31 @@ const ToShare = () => {
 
   return (
     <>
-      {user ? (
-        <>
-          {/* Row for Sort Dropdown, Theme Toggle, and Add New Post Button */}
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            mb={2}
-          >
-            <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
+      {/* Row for Sort Dropdown, Theme Toggle, and Add New Post Button */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={2}
+      >
+        <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
 
-            <Toggle />
+        <Toggle />
 
-            <AddNewPost onPostAdded={handleRefetchPosts} />
-          </Box>
+        <AddNewPost onPostAdded={handleRefetchPosts} />
+      </Box>
 
-          {loading ? (
-            <Box display="flex" justifyContent="center" mt={3}>
-              <CircularProgress />
-            </Box>
-          ) : sortedPosts.length > 0 ? (
-            sortedPosts.map((post) => (
-              <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
-            ))
-          ) : (
-            <Typography variant="body2" textAlign="center" mt={4}>
-              No posts yet. Be the first to share!
-            </Typography>
-          )}
-        </>
+      {loading ? (
+        <Box display="flex" justifyContent="center" mt={3}>
+          <CircularProgress />
+        </Box>
+      ) : sortedPosts.length > 0 ? (
+        sortedPosts.map((post) => (
+          <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
+        ))
       ) : (
-        <Typography variant="h6" textAlign="center" color="textSecondary" mt={4}>
-          Please log in to view and post content.
+        <Typography variant="body2" textAlign="center" mt={4}>
+          No posts yet. Be the first to share!
         </Typography>
       )}
     </>

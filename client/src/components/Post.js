@@ -12,6 +12,7 @@ import {
   Chip,
   Avatar,
 } from "@mui/material";
+import { useAuth } from "../context/AuthContext";
 import EmojiSelector from "./EmojiSelector";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
@@ -24,11 +25,13 @@ import { Timestamp } from "firebase/firestore";
 const Post = ({ post, onPostDeleted }) => {
   const { displayName, photoURL } = post;
   const theme = useTheme();
+  const { user } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-
+console.log('post: ', post)
+console.log('logged in user: ', user)
   const { updateEmojiCount } = usePosts();
 
   const { _seconds, _nanoseconds } = post.createdAt;
@@ -107,9 +110,11 @@ const Post = ({ post, onPostDeleted }) => {
               <IconButton onClick={handleShare}>
                 <ShareIcon />
               </IconButton>
-              <IconButton onClick={() => setOpenDialog(true)} color="error">
-                <DeleteIcon />
-              </IconButton>
+              {user?.displayName === post?.displayName && (
+                <IconButton onClick={() => setOpenDialog(true)} color="error">
+                  <DeleteIcon />
+                </IconButton>
+              )}
             </Box>
           </Stack>
 

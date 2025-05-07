@@ -8,7 +8,9 @@ const CLOUDINARY_UPLOAD_URL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
 const AddNewPost = ({ onPostAdded }) => {
-  const { user: { displayName, photoURL } } = useAuth();
+  const { user } = useAuth();
+  const displayName = user?.displayName;
+  const photoURL = user?.photoURL;
 
   const [open, setOpen] = useState(false);
   const [formError, setFormError] = useState("");
@@ -22,9 +24,15 @@ const AddNewPost = ({ onPostAdded }) => {
   const [isRecording, setIsRecording] = useState(false);
 
   const handleOpen = () => {
+    if (!user) {
+      setFormError("Please log in to share a post.");
+      setOpen(true);
+      return;
+    }
+  
     setAudioBlob(null);
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     stopRecording();
