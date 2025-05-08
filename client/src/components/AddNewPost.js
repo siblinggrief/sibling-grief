@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, Button } from "@mui/material";
 import PostModal from "./PostModal";
 import API_URL from "../config";
@@ -12,6 +12,9 @@ const AddNewPost = ({ onPostAdded }) => {
   const displayName = user?.displayName;
   const photoURL = user?.photoURL;
 
+  const mediaRecorderRef = useRef(null);
+  const cancelledRef = useRef(false);
+
   const [open, setOpen] = useState(false);
   const [formError, setFormError] = useState("");
 
@@ -20,8 +23,14 @@ const AddNewPost = ({ onPostAdded }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
-  const mediaRecorderRef = useRef(null);
-  const [isRecording, setIsRecording] = useState(false);
+  const [recordingStatus, setRecordingStatus] = useState("idle"); // "idle" | "starting" | "recording" | "completed"
+
+  // Reset cancelled flag when modal opens
+  useEffect(() => {
+    if (open) {
+      cancelledRef.current = false;
+    }
+  }, [open]);
 
   const handleOpen = () => {
     if (!user) {
@@ -29,18 +38,24 @@ const AddNewPost = ({ onPostAdded }) => {
       setOpen(true);
       return;
     }
-  
+
     setAudioBlob(null);
     setOpen(true);
   };
 
   const handleClose = () => {
+    if (recordingStatus === "starting") {
+      return;
+    }
+    
+    cancelledRef.current = true;
     stopRecording();
     setOpen(false);
     setTitle("");
     setDescription("");
     setSelectedTopics([]);
     setAudioBlob(null);
+    setRecordingStatus("idle");
     setFormError("");
   };
 
@@ -54,12 +69,17 @@ const AddNewPost = ({ onPostAdded }) => {
       mediaRecorder.ondataavailable = (event) => chunks.push(event.data);
 
       mediaRecorder.onstop = () => {
+        if (cancelledRef.current) return;
+
         const audioFile = new Blob(chunks, { type: "audio/webm" });
         setAudioBlob(audioFile);
+        setRecordingStatus("completed");
       };
 
       mediaRecorder.start();
-      setIsRecording(true);
+      if (!cancelledRef.current) {
+        setRecordingStatus("recording");
+      }
     } catch (error) {
       console.error("Error starting recording:", error);
     }
@@ -68,7 +88,6 @@ const AddNewPost = ({ onPostAdded }) => {
   const stopRecording = () => {
     if (mediaRecorderRef.current) {
       mediaRecorderRef.current.stop();
-      setIsRecording(false);
 
       const tracks = mediaRecorderRef.current.stream.getTracks();
       tracks.forEach((track) => track.stop());
@@ -185,7 +204,8 @@ const AddNewPost = ({ onPostAdded }) => {
         selectedTopics={selectedTopics}
         setSelectedTopics={setSelectedTopics}
         isSaving={isSaving}
-        isRecording={isRecording}
+        recordingStatus={recordingStatus}
+        setRecordingStatus={setRecordingStatus}
         startRecording={startRecording}
         stopRecording={stopRecording}
         audioBlob={audioBlob}

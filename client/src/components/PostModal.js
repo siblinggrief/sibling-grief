@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
+  CircularProgress,
   Dialog,
   DialogContent,
   TextField,
@@ -28,7 +29,8 @@ const PostModal = ({
   selectedTopics,
   setSelectedTopics,
   isSaving,
-  isRecording,
+  recordingStatus,
+  setRecordingStatus,
   startRecording,
   stopRecording,
   audioBlob,
@@ -43,12 +45,24 @@ const PostModal = ({
   const photoURL = user?.photoURL;
 
   const [voiceOnly, setVoiceOnly] = useState(false);
+  const [isStartingRecording, setIsStartingRecording] = useState(false);
+
+  const handleStartRecording = async () => {
+    setRecordingStatus("starting");
+    setIsStartingRecording(true);
+    try {
+      await startRecording(); // assume it's async
+    } finally {
+      setRecordingStatus("recording");
+      setIsStartingRecording(false);
+    }
+  };
 
   const handleVoiceToggle = (e) => {
     setFormError(""); // Clear any previous error message
     const isChecked = e.target.checked;
     setVoiceOnly(isChecked);
-  
+
     if (isChecked) {
       setDescription(""); // Clear text when switching to voice
     } else {
@@ -60,6 +74,17 @@ const PostModal = ({
       }
     }
   };
+
+  // Reset all necessary states when the modal is closed
+  useEffect(() => {
+    if (!open) {
+      setVoiceOnly(false);
+      setDescription("");
+      setSelectedTopics([]);
+      setAudioBlob(null); // Reset audioBlob when modal is closed
+      setFormError(""); // Clear any form errors
+    }
+  }, [open, setDescription, setSelectedTopics, setAudioBlob, setFormError]);
 
   return (
     <Dialog
@@ -79,7 +104,7 @@ const PostModal = ({
           <IconButton onClick={onClose}>
             <ArrowBack />
           </IconButton>
-          {photoURL && <Avatar src={photoURL} referrerPolicy="no-referrer"/>}
+          {photoURL && <Avatar src={photoURL} referrerPolicy="no-referrer" />}
           <Typography variant="subtitle1">{displayName || "User"}</Typography>
         </Box>
 
@@ -98,12 +123,12 @@ const PostModal = ({
             slotProps={{
               input: {
                 style: {
-                  color: theme.palette.text.black, // Use black for typed text
+                  color: theme.palette.text.black,
                 },
               },
               notchedOutline: {
                 style: {
-                  borderColor: theme.palette.text.black, // Default border
+                  borderColor: theme.palette.text.black,
                 },
               },
             }}
@@ -111,7 +136,7 @@ const PostModal = ({
               e.target.parentElement.style.borderColor = theme.palette.text.black;
             }}
             onBlur={(e) => {
-              e.target.parentElement.style.borderColor = ""; // Reset
+              e.target.parentElement.style.borderColor = "";
             }}
           />
         </Box>
@@ -169,12 +194,12 @@ const PostModal = ({
               slotProps={{
                 input: {
                   style: {
-                    color: theme.palette.text.black, // Use black for typed text
+                    color: theme.palette.text.black,
                   },
                 },
                 notchedOutline: {
                   style: {
-                    borderColor: theme.palette.text.black, // Default border
+                    borderColor: theme.palette.text.black,
                   },
                 },
               }}
@@ -182,7 +207,7 @@ const PostModal = ({
                 e.target.parentElement.style.borderColor = theme.palette.text.black;
               }}
               onBlur={(e) => {
-                e.target.parentElement.style.borderColor = ""; // Reset
+                e.target.parentElement.style.borderColor = "";
               }}
             />
           </Box>
@@ -194,18 +219,34 @@ const PostModal = ({
             <Typography className={styles.label}>What would you like to share?</Typography>
             <Box>
               <Button
-                onClick={isRecording ? stopRecording : startRecording}
+                onClick={
+                  recordingStatus === "recording" ? stopRecording : handleStartRecording
+                }
                 className={styles.recordButton}
-                startIcon={<Mic />}
+                startIcon={
+                  isStartingRecording ? (
+                    <CircularProgress size={16} color="inherit" />
+                  ) : (
+                    <Mic />
+                  )
+                }
+                disabled={recordingStatus === "completed" || isStartingRecording}
               >
-                {isRecording ? "Stop Recording" : "Start Recording"}
+                {isStartingRecording
+                  ? "Starting..."
+                  : recordingStatus === "recording"
+                  ? "Stop Recording"
+                  : recordingStatus === "completed"
+                  ? "Recording Complete"
+                  : "Start Recording"}
               </Button>
-              {isRecording && (
+
+              {recordingStatus === "recording" && (
                 <Typography mt={1} variant="body2" color="secondary">
                   Recording in progress...
                 </Typography>
               )}
-              {audioBlob && (
+              {recordingStatus === "completed" && (
                 <Typography mt={1} variant="body2" color="success.main">
                   Audio recorded. Ready to upload.
                 </Typography>
@@ -214,28 +255,33 @@ const PostModal = ({
           </Box>
         )}
 
-        {formError && <div className={styles.error}>{formError.includes("log in") ? (
-                        <>
-                          Please <Link to="/login">log in</Link> to share a post.
-                        </>
-                      ) : (
-                        formError
-                      )}</div>}
+        {/* Form Error */}
+        {formError && (
+          <div className={styles.error}>
+            {formError.includes("log in") ? (
+              <>
+                Please <Link to="/login">log in</Link> to share a post.
+              </>
+            ) : (
+              formError
+            )}
+          </div>
+        )}
 
         {/* Action Buttons */}
         <Box className={styles.actions}>
-        <Button
+          <Button
             onClick={onClose}
             disabled={isSaving}
             className={styles.borderButton}
             sx={{
               color: theme.palette.text.black,
-              backgroundColor: theme.palette.action.disabled, // Default light grey background
+              backgroundColor: theme.palette.action.disabled,
               "&:hover": {
-                backgroundColor: theme.palette.grey[200], // Light grey background on hover
+                backgroundColor: theme.palette.grey[200],
               },
               "&.Mui-disabled": {
-                backgroundColor: theme.palette.grey[300], // Disabled state background color
+                backgroundColor: theme.palette.grey[300],
               }
             }}
           >
