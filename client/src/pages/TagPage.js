@@ -6,9 +6,15 @@ import { usePosts } from '../context/PostsContext';
 
 const TagPage = () => {
   const { tagName } = useParams();
-  const { posts, deletePost, loading } = usePosts();
+  const { posts, deletePost, fetchPosts, loading } = usePosts();
   
   const [filteredPosts, setFilteredPosts] = useState([]);
+
+  useEffect(() => {
+    if (!posts.length && !loading) {
+      fetchPosts();
+    }
+  }, [posts, loading, fetchPosts]);
 
   useEffect(() => {
     const filtered = posts.filter(post => post.topics?.includes(tagName));

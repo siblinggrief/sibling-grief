@@ -57,20 +57,16 @@ const Sidebar = () => {
           </ListItem>
         </NavLink>
 
-        {user && (
-        <>
-          <div className={styles.sectionHeading}>Topics</div>
-          {sidebarTopics.map(({ label, tag }) => (
-            <NavLink
-              key={tag}
-              to={`/tag/${tag}`}
-              className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
-            >
-              {label}
-            </NavLink>
-          ))}
-        </>
-      )}
+        <div className={styles.sectionHeading}>Topics</div>
+        {sidebarTopics.map(({ label, tag }) => (
+          <NavLink
+            key={tag}
+            to={`/tag/${tag}`}
+            className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
+          >
+            {label}
+          </NavLink>
+        ))}
       
         <div className={styles.sectionHeading}>Resources</div>
         <NavLink
