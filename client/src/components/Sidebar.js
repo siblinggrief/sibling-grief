@@ -9,7 +9,6 @@ import styles from "./Sidebar.module.css";
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
-    const { user } = useAuth();
     const sidebarTopics = [
       { label: "Memories", tag: "Memory" },
       { label: "Stories", tag: "Story" },
