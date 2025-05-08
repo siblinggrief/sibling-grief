@@ -13,7 +13,6 @@ import {
   Avatar,
 } from "@mui/material";
 import { useAuth } from "../context/AuthContext";
-import EmojiSelector from "./EmojiSelector";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteDialog from "./DeleteDialog";
@@ -22,26 +21,21 @@ import "firebase/compat/firestore";
 import CustomAudioPlayer from "./CustomAudioPlayer";
 import { Timestamp } from "firebase/firestore";
 
+const EMOJIS = ['❤️', '🤗', '😢', '🌈', '🕊️'];
+
 const Post = ({ post, onPostDeleted }) => {
   const { displayName, photoURL } = post;
   const theme = useTheme();
   const { user } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [showPicker, setShowPicker] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-console.log('post: ', post)
-console.log('logged in user: ', user)
+
   const { updateEmojiCount } = usePosts();
 
   const { _seconds, _nanoseconds } = post.createdAt;
   const timestamp = new Timestamp(_seconds, _nanoseconds);
   const createdDate = timestamp.toDate();
-
-  const handleEmojiSelect = (emoji) => {
-    setShowPicker(false);
-    updateEmojiCount(post.id, emoji);
-  };
 
   const handleEmojiClick = (emoji) => {
     updateEmojiCount(post.id, emoji);
@@ -165,48 +159,28 @@ console.log('logged in user: ', user)
             alignItems="center"
             sx={{ marginTop: 2, flexWrap: "wrap", gap: 1 }}
           >
-            <Box sx={{ position: 'relative' }}>
-              {/* Emoji Picker */}
-              {showPicker && (
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    bottom: '100%',
-                    left: 0,
-                    zIndex: 10,
-                  }}
-                >
-                  <EmojiSelector onEmojiSelect={handleEmojiSelect} />
-                </Box>
-              )}
 
-              {/* Emoji Display Box */}
-              <Box
-                sx={{
-                  backgroundColor: theme.palette.action.disabled,
-                  borderRadius: '9999px',
-                  padding: '6px 12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 1.5,
-                  flexWrap: 'wrap',
-                }}
+          <Box
+            sx={{
+              backgroundColor: theme.palette.action.disabled,
+              borderRadius: '9999px',
+              padding: '6px 12px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1.5,
+              flexWrap: 'wrap',
+            }}
+          >
+            {EMOJIS.map((emoji) => (
+              <span
+                key={emoji}
+                onClick={() => handleEmojiClick(emoji)}
+                style={{ cursor: 'pointer' }}
               >
-                {post.counts && Object.entries(post.counts).map(([emoji, count]) => (
-                  <span key={emoji} onClick={() => handleEmojiClick(emoji)} style={{ cursor: 'pointer' }}>
-                    {emoji} {count}
-                  </span>
-                ))}
-
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontWeight: 200, cursor: 'pointer' }}
-                  onClick={() => setShowPicker((prev) => !prev)}
-                >
-                  Choose own emoji
-                </Typography>
-              </Box>
-            </Box>
+                {emoji} {post.counts?.[emoji] || 0}
+              </span>
+            ))}
+          </Box>
 
             <Box
               sx={{

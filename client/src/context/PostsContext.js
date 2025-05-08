@@ -25,7 +25,7 @@ export const PostsProvider = ({ children }) => {
     }
   };
 
-  const updateEmojiCount = (postId, emoji) => {
+  const updateEmojiCount = async (postId, emoji) => {
     setPosts((prevPosts) =>
       prevPosts?.map((post) =>
         post.id === postId
@@ -39,6 +39,22 @@ export const PostsProvider = ({ children }) => {
           : post
       )
     );
+     // Persist to backend
+      try {
+        const response = await fetch(`${API_URL}/api/posts/${postId}/updateEmoji`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ emoji }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update emoji count in DB");
+        }
+      } catch (error) {
+        console.error("Error updating emoji count in backend:", error);
+      }
   };
 
   const deletePost = (postId) => {
