@@ -60,6 +60,7 @@ const PostModal = ({
 
   const handleVoiceToggle = (e) => {
     setFormError(""); // Clear any previous error message
+    if(!user) setFormError("Please log in to share a post.");
     const isChecked = e.target.checked;
     setVoiceOnly(isChecked);
 
@@ -105,7 +106,7 @@ const PostModal = ({
             <ArrowBack />
           </IconButton>
           {photoURL && <Avatar src={photoURL} referrerPolicy="no-referrer" />}
-          <Typography variant="subtitle1">{displayName || "User"}</Typography>
+          <Typography variant="subtitle1">{displayName || ""}</Typography>
         </Box>
 
         <Typography variant="h6" mt={2}>Share your story</Typography>
@@ -230,7 +231,7 @@ const PostModal = ({
                     <Mic />
                   )
                 }
-                disabled={recordingStatus === "completed" || isStartingRecording}
+                disabled={!user || recordingStatus === "completed" || isStartingRecording}
               >
                 {isStartingRecording
                   ? "Starting..."
@@ -289,7 +290,7 @@ const PostModal = ({
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={!title.trim() || isSaving || (voiceOnly && !audioBlob)}
+            disabled={!user || !title.trim() || isSaving || (voiceOnly && !audioBlob)}
             className={`${styles.borderButton} ${!title.trim() || isSaving || (voiceOnly && !audioBlob) ? styles.submitButtonDisabled : styles.submitButtonEnabled}`}
           >
             {isSaving ? "Saving..." : "Save"}
