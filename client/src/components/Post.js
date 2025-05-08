@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import {
   Card,
   CardContent,
+  Dialog,
   Typography,
   IconButton,
   Stack,
@@ -16,6 +17,7 @@ import { useAuth } from "../context/AuthContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import DeleteDialog from "./DeleteDialog";
+import ShareMenu from "./ShareMenu";
 import API_URL from "../config";
 import "firebase/compat/firestore";
 import CustomAudioPlayer from "./CustomAudioPlayer";
@@ -30,6 +32,8 @@ const Post = ({ post, onPostDeleted }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const [showShareMenu, setShowShareMenu] = useState(false);
 
   const { updateEmojiCount } = usePosts();
 
@@ -60,15 +64,7 @@ const Post = ({ post, onPostDeleted }) => {
   };
 
   const handleShare = () => {
-    if (navigator.share) {
-      navigator.share({
-        title: "Firefly Lives",
-        text: post.title,
-        url: window.location.href,
-      });
-    } else {
-      alert("Sharing not supported in this browser.");
-    }
+    setShowShareMenu(true);
   };
 
   return (
@@ -104,6 +100,15 @@ const Post = ({ post, onPostDeleted }) => {
               <IconButton onClick={handleShare}>
                 <ShareIcon />
               </IconButton>
+
+            <Dialog open={showShareMenu} onClose={() => setShowShareMenu(false)}>
+              <ShareMenu
+                postTitle={post.title}
+                postUrl={window.location.href}
+                onClose={() => setShowShareMenu(false)}
+              />
+            </Dialog>
+
               {user?.displayName === post?.displayName && (
                 <IconButton onClick={() => setOpenDialog(true)} color="error">
                   <DeleteIcon />
