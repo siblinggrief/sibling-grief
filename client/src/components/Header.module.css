@@ -7,14 +7,26 @@
   gap: 16px;
 }
 
+.logoClickable {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* optional spacing between logo and text */
+}
+
+.logoImage {
+  height: 32px;
+  width: auto;
+}
+
 .logoContainer {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.logoImage {
-  height: 32px;
+.logoClickable:hover,
+.logoContainer:hover {
+  opacity: 0.85;
 }
 
 .toolbar {

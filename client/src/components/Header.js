@@ -26,7 +26,8 @@ import { auth } from "../firebaseConfig";
 import styles from "./Header.module.css";
 
 const Header = () => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
+
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -65,10 +66,16 @@ const Header = () => {
               >
                 <MenuIcon />
               </IconButton>
-              <img src="/logo.jpg" alt="Firefly Lives" className={styles.logoImage} />
-              <Typography variant="h6" noWrap>
-                Firefly Lives
-              </Typography>
+               <Box
+                className={styles.logoClickable}
+                onClick={() => navigate("/")}
+                style={{ cursor: "pointer" }}
+              >
+                <img src="/logo.jpg" alt="Firefly Lives" className={styles.logoImage} />
+                <Typography variant="h6" noWrap>
+                  Firefly Lives
+                </Typography>
+              </Box>
             </Box>
             <Box className={styles.mobileRight}>
               <IconButton
@@ -116,6 +123,18 @@ const Header = () => {
               onClose={() => setDrawerOpen(false)}
             >
               <List>
+                {user && role === "admin" && (
+                <ListItem disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      navigate("/admin");
+                      setDrawerOpen(false);
+                    }}
+                  >
+                    <ListItemText primary="Admin" />
+                  </ListItemButton>
+                </ListItem>
+              )}
                 {navLinks.map((link) => (
                   <ListItem key={link.label} disablePadding>
                     <ListItemButton
@@ -145,7 +164,11 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Box className={styles.logoContainer}>
+            <Box
+              className={styles.logoContainer}
+              onClick={() => navigate("/")}
+              style={{ cursor: "pointer" }}
+            >
               <img src="/logo.jpg" alt="Firefly Lives" className={styles.logoImage} />
               <Typography variant="h6" noWrap>
                 Firefly Lives
