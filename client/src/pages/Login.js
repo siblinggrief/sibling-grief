@@ -19,7 +19,11 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      navigate("/");
+      if(result?.user?.emailVerified) {
+        navigate("/to-share");
+      } else {
+        navigate("/");
+      }      
     } catch (error) {
       console.error("Google login error:", error);
     }

@@ -8,14 +8,15 @@ import SortDropdown from '../components/SortDropdown';
 import Toggle from '../components/Toggle';
 
 const ToShare = () => {
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const { posts, fetchPosts, deletePost, loading, setHasFetched } = usePosts();
   
   const [sortOption, setSortOption] = useState('newest');
 
   // Memoize the sorted posts to optimize performance and avoid unnecessary re-renders
   const sortedPosts = useMemo(() => {
-    const sortedArray = [...posts];
+    const approvedPosts = posts.filter((post) => post.status === 'approved');
+    const sortedArray = [...approvedPosts];
     if (sortOption === 'newest') {
       return sortedArray.sort((a, b) => b.createdAt._seconds - a.createdAt._seconds);
     }

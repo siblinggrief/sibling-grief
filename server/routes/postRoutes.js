@@ -5,12 +5,14 @@ const {
   getPosts,
   createPost,
   deletePost,
-  updateEmojiCount, // New route for updating emoji count
+  updateEmojiCount,
+  updatePostStatus
 } = require("../controllers/postController");
 
 // Post Routes
 router.get("/posts", getPosts);
 router.post("/posts", createPost);
+router.post('/posts/:postId/updateStatus', updatePostStatus);
 router.delete("/posts/:id", deletePost);
 
 // New route to update emoji count

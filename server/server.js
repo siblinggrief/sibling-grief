@@ -12,6 +12,7 @@ require("./config/firebase"); // initializes Firebase
 require("./config/cloudinary"); // configures Cloudinary
 const postRoutes = require("./routes/postRoutes");
 const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -32,6 +33,7 @@ app.get("/", (req, res) => {
 // 🔹 Use routes
 app.use("/api", postRoutes);
 app.use("/api", cloudinaryRoutes);
+app.use("/api", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running and listening on port ${PORT}`);

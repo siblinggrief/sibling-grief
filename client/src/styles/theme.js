@@ -51,6 +51,18 @@ const theme = createTheme({
             },
           },
         },
+         {
+        props: { variant: "outlined" },
+        style: {
+          backgroundColor: "#2a2a2a", // Matches `background.paper`
+          borderColor: "#888",       // Mid-grey border
+          color: "#ffffff",
+          "&:hover": {
+            backgroundColor: "#3a3a3a", // Slightly lighter on hover
+            borderColor: "#aaa",
+          },
+        },
+      },
       ],
     },
   },

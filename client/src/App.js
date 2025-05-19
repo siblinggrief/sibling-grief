@@ -6,6 +6,8 @@ import { auth } from "./firebaseConfig";
 import { AuthProvider } from "./context/AuthContext";
 
 import Home from "./pages/Home";
+import RequireAdmin from "./components/RequireAdmin";
+import Admin from "./pages/Admin";
 import About from "./pages/About";
 import ToShare from "./pages/ToShare";
 import ToCare from "./pages/ToCare";
@@ -51,7 +53,10 @@ const App = () => {
                 <Route path="/subscribe" element={<Subscribe />} />
 
                 {user ? (
-                  <Route path="/" element={<Home />} />
+                  <>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
+                  </>
                 ) : (
                   <Route path="/" element={<Navigate to="/login" />} />
                 )}

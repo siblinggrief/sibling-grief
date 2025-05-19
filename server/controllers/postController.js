@@ -29,6 +29,7 @@ const createPost = async (req, res) => {
       topics: Array.isArray(topics) ? topics : [],
       displayName,
       photoURL,
+      status: "pending",
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 
@@ -121,9 +122,28 @@ const updateEmojiCount = async (req, res) => {
   }
 };
 
+const updatePostStatus = async (req, res) => {
+  const { postId } = req.params;
+  const { status } = req.body;
+
+  if (!['approved', 'rejected', 'pending'].includes(status)) {
+    return res.status(400).json({ message: 'Invalid status value' });
+  }
+
+  try {
+    const postRef = db.collection('posts').doc(postId);
+    await postRef.update({ status });
+    res.status(200).json({ message: 'Post status updated' });
+  } catch (error) {
+    console.error('Error updating post status:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   getPosts,
   createPost,
   deletePost,
   updateEmojiCount,
+  updatePostStatus,
 };

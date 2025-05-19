@@ -25,6 +25,29 @@ export const PostsProvider = ({ children }) => {
     }
   };
 
+  const updatePostStatus = async (postId, status) => {
+  try {
+    const response = await fetch(`${API_URL}/api/posts/${postId}/updateStatus`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    if (!response.ok) throw new Error("Failed to update post status");
+
+    // Optional: Update local state optimistically
+    setPosts((prev) =>
+      prev.map((post) =>
+        post.id === postId ? { ...post, status } : post
+      )
+    );
+  } catch (error) {
+    console.error("Error updating post status:", error);
+  }
+};
+
   const updateEmojiCount = async (postId, emoji) => {
     setPosts((prevPosts) =>
       prevPosts?.map((post) =>
@@ -62,7 +85,7 @@ export const PostsProvider = ({ children }) => {
   };
 
   return (
-    <PostsContext.Provider value={{ posts, fetchPosts, deletePost, loading, setHasFetched, updateEmojiCount }}>
+    <PostsContext.Provider value={{ posts, fetchPosts, deletePost, loading, setHasFetched, updateEmojiCount, updatePostStatus }}>
       {children}
     </PostsContext.Provider>
   );

@@ -5,21 +5,38 @@ import { Box, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import AddIcon from "@mui/icons-material/Add";
 import EmailIcon from "@mui/icons-material/Email";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import styles from "./Sidebar.module.css";
 import { useAuth } from '../context/AuthContext';
 
 const Sidebar = () => {
-    const sidebarTopics = [
-      { label: "Memories", tag: "Memory" },
-      { label: "Stories", tag: "Story" },
-      { label: "Venting", tag: "Vent" },
-      { label: "Achievements", tag: "Achievement" },
-      { label: "The Day", tag: "Today" },
-    ];    
+  const { role } = useAuth();
+
+  const sidebarTopics = [
+    { label: "Memories", tag: "Memory" },
+    { label: "Stories", tag: "Story" },
+    { label: "Venting", tag: "Vent" },
+    { label: "Achievements", tag: "Achievement" },
+    { label: "The Day", tag: "Today" },
+  ];    
     
   return (
     <Box className={styles.sidebar}>
       <nav className={styles.nav}>
+        {role === 'admin' && (
+           <NavLink
+          to="/admin"
+          className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          >
+            <ListItem button>
+            <ListItemIcon>
+              <AdminPanelSettingsIcon className={styles.icon} />
+            </ListItemIcon>
+            <ListItemText primary="Admin" />
+          </ListItem>
+          </NavLink>
+      )}
+
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
