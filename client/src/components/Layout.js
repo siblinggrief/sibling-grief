@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Header from "./Header";
@@ -13,9 +12,9 @@ const Layout = ({ children }) => {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Header />
-      <Box sx={{ flexGrow: 1, display: "flex" }} className={styles.container}>
+      <Box sx={{ flexGrow: 1, display: "flex", bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }} className={styles.container}>
         {!isMobile && <Sidebar />}
-        <Box className={styles.content}>{children}</Box>
+        <Box className={styles.content} sx={{ bgcolor: theme.palette.background.paper, color: theme.palette.text.primary }}>{children}</Box>
       </Box>
       <Footer />
     </Box>

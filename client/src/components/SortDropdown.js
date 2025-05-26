@@ -23,10 +23,10 @@ const SortDropdown = ({ sortOption, setSortOption }) => {
           onChange={(e) => setSortOption(e.target.value)}
           label="Sort By"
           sx={{
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.text.primary,
+            backgroundColor: theme.palette.custom.darkGreen,
+            color: theme.palette.custom.white,
             '&:hover': {
-              backgroundColor: theme.palette.primary.dark,
+              backgroundColor: theme.palette.custom.mediumGreen,
             },
             textTransform: 'none',
             fontSize: '14px',

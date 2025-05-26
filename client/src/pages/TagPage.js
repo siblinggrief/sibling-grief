@@ -17,7 +17,7 @@ const TagPage = () => {
   }, [posts, loading, fetchPosts]);
 
   useEffect(() => {
-    const filtered = posts.filter(post => post.topics?.includes(tagName));
+    const filtered = posts.filter(post => (post.status === 'approved' && post.topics?.includes(tagName)));
     setFilteredPosts(filtered);
   }, [posts, tagName]);
 

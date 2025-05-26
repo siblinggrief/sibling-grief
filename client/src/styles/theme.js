@@ -1,71 +1,68 @@
 import { createTheme } from "@mui/material/styles";
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#14532d", // Dark Green
-    },
-    secondary: {
-      main: "#1e7a40", // Lighter Green
-    },
-    error: {
-      main: "#888888", // Replacing red with mid-grey
-    },
-    background: {
-      default: "#1e1e1e", // Deep grey
-      paper: "#2a2a2a",   // Slightly lighter grey
-    },
-    text: {
-      primary: "#FFFFFF",
-      secondary: "#A5D6A7", // Light greenish-grey
-      black: "#000000",
-    },
-    action: {
-      hover: "#355e42",           // Dark green-grey
-      disabledBackground: "#3d3d3d", // Grey background for disabled buttons
-      disabled: "#bbbbbb",            // Light grey text when disabled
-    },
-    custom: {
-      header: "#0e3b25", // Very dark green for AppBar
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          textTransform: "none",
-        },
-      },
-      variants: [
-        {
-          props: { variant: "darkContained" },
-          style: {
-            backgroundColor: "#2e7d32", // Rich green
-            color: "#ffffff",
-            "&:hover": {
-              backgroundColor: "#1b5e20",
+const commonColors = {
+  darkGreen: '#0e3b25',
+  mediumGreen: '#14532d',
+  darkGrey: '#3d3d3d',
+  grey: '#888888',
+  white: '#ffffff',
+  black: '#000000',
+  // Add more custom colors here if needed
+};
+
+const theme = (mode) =>
+  createTheme({
+    palette: {
+      mode,
+      ...(mode === "dark"
+        ? {
+            background: {
+              default: "#121212",
+              paper: "#121212",
             },
-            "&.Mui-disabled": {
-              backgroundColor: "#444", // Greyed out
-              color: "#bbb",
+            text: {
+              primary: "#ffffff",
+              secondary: commonColors.darkGreen,
             },
-          },
-        },
-         {
-        props: { variant: "outlined" },
-        style: {
-          backgroundColor: "#2a2a2a", // Matches `background.paper`
-          borderColor: "#888",       // Mid-grey border
-          color: "#ffffff",
-          "&:hover": {
-            backgroundColor: "#3a3a3a", // Slightly lighter on hover
-            borderColor: "#aaa",
-          },
-        },
-      },
-      ],
+            custom: {
+              darkGreen: commonColors.darkGreen,
+              mediumGreen: commonColors.mediumGreen,
+              darkGrey: commonColors.darkGrey,
+              grey: commonColors.grey,
+              white: commonColors.white,
+              black: commonColors.black,
+              icon: "#ffffff",
+              header: commonColors.darkGreen,
+              sidebar: "#1b1b1b",
+              button: "#2e7d32",
+            },
+          }
+        : {
+            background: {
+              default: "#f5f5f5",
+              paper: "#ffffff",
+            },
+            text: {
+              primary: "#000000",
+              secondary: commonColors.darkGreen,
+            },
+            custom: {
+              darkGreen: commonColors.darkGreen,
+              mediumGreen: commonColors.mediumGreen,
+              darkGrey: commonColors.darkGrey,
+              grey: commonColors.grey,
+              white: commonColors.white,
+              black: commonColors.black,
+              icon: "#0e3b25",
+              header: commonColors.darkGreen,
+              sidebar: "#1b1b1b",
+              button: "#2e7d32",
+            },
+          }),
     },
-  },
-});
+    typography: {
+      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    },
+  });
 
 export default theme;

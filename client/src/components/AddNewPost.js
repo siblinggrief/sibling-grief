@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useTheme } from "@mui/material/styles";
 import { Box, Button } from "@mui/material";
 import PostModal from "./PostModal";
 import API_URL from "../config";
@@ -9,6 +10,7 @@ const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
 const AddNewPost = ({ onPostAdded }) => {
   const { user } = useAuth();
+  const theme = useTheme();
   const displayName = user?.displayName;
   const photoURL = user?.photoURL;
 
@@ -188,8 +190,20 @@ const AddNewPost = ({ onPostAdded }) => {
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-        <Button onClick={handleOpen} variant="contained" color="primary">
-          Add New Post
+        <Button 
+          onClick={handleOpen}
+          variant="contained"
+          sx={{
+            backgroundColor: theme.palette.custom.darkGreen,      
+            color: theme.palette.custom.white,                 
+            "&:hover": {
+              backgroundColor: theme.palette.custom.mediumGreen,   
+            },
+            textTransform: "none",
+            fontWeight: 400,
+          }}
+          >
+            Add New Post
         </Button>
       </Box>
 

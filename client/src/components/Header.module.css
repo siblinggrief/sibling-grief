@@ -10,7 +10,8 @@
 .logoClickable {
   display: flex;
   align-items: center;
-  gap: 8px; /* optional spacing between logo and text */
+  gap: 8px;
+  color: white !important;
 }
 
 .logoImage {
@@ -22,6 +23,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  color: white !important;
 }
 
 .logoClickable:hover,
@@ -52,7 +54,7 @@
 }
 
 .navLink {
-  color: inherit;
+  color: white !important;
   text-decoration: none;
   padding: 8px 16px;
   font-weight: normal;
@@ -94,12 +96,9 @@
   background-color: transparent;
 }
 
-.searchInput::placeholder {
-  color: var(--color-header);
-}
-
 .logoutButton {
   margin-left: 16px;
+  color: white !important;
 }
 
 /* Mobile Specific Layouts */
@@ -108,12 +107,14 @@
   align-items: center;
   gap: 8px;
   flex: 1;
+  color: white !important;
 }
 
 .mobileRight {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: white !important;
 }
 
 .drawer {

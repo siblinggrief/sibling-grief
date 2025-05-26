@@ -1,44 +1,22 @@
-import React, { useState } from 'react';
-import { IconButton, Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography } from '@mui/material';
-import ToggleButton from '@mui/icons-material/ToggleOff';
-import { useTheme } from '@mui/material/styles';
+import React from 'react';
+import { IconButton, Tooltip } from '@mui/material';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import { useAppTheme } from '../context/ThemeContext';
 
 const Toggle = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [modalText, setModalText] = useState('');
-  const theme = useTheme();
-
-  // Function to open modal with custom message
-  const showModal = (message) => {
-    setModalText(message);
-    setOpenModal(true);
-  };
-
-  // Handler for the ToggleButton click
-  const handleToggleClick = () => {
-    showModal('This feature is still being developed.');
-  };
+  const { mode, toggleTheme } = useAppTheme();
 
   return (
-    <div>
-      {/* IconButton with enlarged ToggleButton */}
-      <IconButton onClick={handleToggleClick}>
-        <ToggleButton sx={{ fontSize: 40, color: 'white' }} /> {/* Make icon bigger and white */}
+    <Tooltip title={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}>
+      <IconButton onClick={toggleTheme}>
+        {mode === 'dark' ? (
+          <ToggleOnIcon sx={{ fontSize: 50, color: 'white' }} />
+        ) : (
+          <ToggleOffIcon sx={{ fontSize: 50, color: 'black' }} />
+        )}
       </IconButton>
-
-      {/* Modal dialog */}
-      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Coming Soon</DialogTitle>
-        <DialogContent>
-          <Typography>{modalText}</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenModal(false)} color="primary" sx={{ color: theme.palette.text.secondary }}>
-            OK
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+    </Tooltip>
   );
 };
 

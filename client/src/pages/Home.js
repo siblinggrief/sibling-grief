@@ -19,8 +19,7 @@ const Home = () => {
 
       <Typography
         variant="body1"
-        color="textSecondary"
-        sx={{ mb: 2, lineHeight: 1.6, textAlign: "center" }}
+        sx={{ mb: 2, lineHeight: 1.6, textAlign: "center", color: theme.palette.success.main }}
       >
         Share, connect, and heal through voice and text with others who understand sibling loss.
       </Typography>

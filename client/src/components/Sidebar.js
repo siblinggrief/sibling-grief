@@ -1,5 +1,4 @@
 // src/components/Sidebar.js
-import React from "react";
 import { NavLink } from "react-router-dom";
 import { Box, ListItem, ListItemText, ListItemIcon } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -8,9 +7,11 @@ import EmailIcon from "@mui/icons-material/Email";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import styles from "./Sidebar.module.css";
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from "@mui/material/styles";
 
 const Sidebar = () => {
   const { role } = useAuth();
+    const theme = useTheme();
 
   const sidebarTopics = [
     { label: "Memories", tag: "Memory" },
@@ -21,7 +22,7 @@ const Sidebar = () => {
   ];    
     
   return (
-    <Box className={styles.sidebar}>
+    <Box className={styles.sidebar} sx={{ bgcolor: theme.palette.background.paper, color: theme.palette.text.primary}}>
       <nav className={styles.nav}>
         {role === 'admin' && (
            <NavLink

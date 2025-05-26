@@ -53,7 +53,7 @@ const Header = () => {
   ];
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: theme.palette.custom.header }}>
+    <AppBar position="static" color="default" sx={{ backgroundColor: theme.palette.custom.header, backgroundImage: "none" }}>
       <Toolbar className={styles.toolbar}>
         {isMobile ? (
           <>
@@ -101,7 +101,7 @@ const Header = () => {
               </IconButton>
             </Box>
             {showSearch && (
-              <Box className={styles.mobileSearchWrapper}>
+              <Box>
                 <InputBase
                   placeholder="Search…"
                   inputProps={{
@@ -192,12 +192,12 @@ const Header = () => {
                 placeholder="Search…"
                 inputProps={{
                   "aria-label": "search",
-                  style: { color: theme.palette.text.primary },
+                  style: { color: theme.palette.custom.darkGreen }
                 }}
                 className={styles.searchInput}
                 sx={{
                   "&::placeholder": {
-                    color: theme.palette.text.secondary,
+                    color: theme.palette.custom.darkGreen,
                   },
                 }}
               />

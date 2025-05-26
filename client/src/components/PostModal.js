@@ -92,12 +92,6 @@ const PostModal = ({
       open={open}
       onClose={onClose}
       maxWidth="xl"
-      sx={{
-        "& .MuiDialog-paper": {
-          backgroundColor: "#f5f5f5",
-          color: "black",
-        },
-      }}
     >
       <DialogContent className={styles.modalPaper}>
         {/* Header */}
@@ -276,8 +270,8 @@ const PostModal = ({
             disabled={isSaving}
             className={styles.borderButton}
             sx={{
-              color: theme.palette.text.black,
-              backgroundColor: theme.palette.action.disabled,
+              color: theme.palette.custom.darkGreen,
+              backgroundColor: theme.palette.custom.white,
               "&:hover": {
                 backgroundColor: theme.palette.grey[200],
               },
@@ -291,6 +285,17 @@ const PostModal = ({
           <Button
             onClick={handleSubmit}
             disabled={!user || !title.trim() || isSaving || (voiceOnly && !audioBlob)}
+            sx={{
+              backgroundColor: theme.palette.custom.darkGreen,
+              color: theme.palette.custom.white,          
+              "&:hover": {
+                backgroundColor: theme.palette.custom.mediumGreen,
+              },
+              "&.Mui-disabled": {
+                backgroundColor: theme.palette.grey[300],
+                color: theme.palette.custom.darkGrey,
+              },
+            }}
             className={`${styles.borderButton} ${!title.trim() || isSaving || (voiceOnly && !audioBlob) ? styles.submitButtonDisabled : styles.submitButtonEnabled}`}
           >
             {isSaving ? "Saving..." : "Save"}

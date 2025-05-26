@@ -13,17 +13,26 @@ import { useTheme } from "@mui/material/styles";
 const Login = () => {
   const navigate = useNavigate();
   const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
+  const darkGreen = theme.palette.custom.darkGreen;
+  const mediumGreen = theme.palette.custom.mediumGreen;
+  const lightText = theme.palette.grey[100];
+  const borderColor = isDarkMode ? lightText : darkGreen;
+  const textColor = isDarkMode ? lightText : darkGreen;
+  const hoverBorder = mediumGreen;
+  const hoverBg = isDarkMode ? `${mediumGreen}1A` : `${mediumGreen}10`;
+
   const [openModal, setOpenModal] = useState(false);
   const [modalText, setModalText] = useState("");
 
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
-      if(result?.user?.emailVerified) {
+      if (result?.user?.emailVerified) {
         navigate("/to-share");
       } else {
         navigate("/");
-      }      
+      }
     } catch (error) {
       console.error("Google login error:", error);
     }
@@ -33,6 +42,16 @@ const Login = () => {
     setModalText(text);
     setOpenModal(true);
   };
+
+  const getButtonStyle = () => ({
+    color: textColor,
+    borderColor,
+    fontWeight: 600,
+    '&:hover': {
+      borderColor: hoverBorder,
+      backgroundColor: hoverBg,
+    },
+  });
 
   return (
     <Box textAlign="center" mt={10}>
@@ -45,13 +64,7 @@ const Login = () => {
           variant="outlined"
           startIcon={<FcGoogle size={24} />}
           onClick={handleGoogleLogin}
-          sx={{
-            color: theme.palette.text.secondary,
-            borderColor: theme.palette.text.secondary,
-            '&:hover': {
-              borderColor: theme.palette.secondary.main,
-            },
-          }}
+          sx={getButtonStyle()}
         >
           Login with Google
         </Button>
@@ -60,13 +73,7 @@ const Login = () => {
           variant="outlined"
           startIcon={<FaFacebook size={20} color="#4267B2" />}
           onClick={() => showModal("Facebook login is not set up yet.")}
-          sx={{
-            color: theme.palette.text.secondary,
-            borderColor: theme.palette.text.secondary,
-            '&:hover': {
-              borderColor: theme.palette.secondary.main,
-            },
-          }}
+          sx={getButtonStyle()}
         >
           Login with Facebook
         </Button>
@@ -75,13 +82,7 @@ const Login = () => {
           variant="outlined"
           startIcon={<FaApple size={20} />}
           onClick={() => showModal("Apple login is not set up yet.")}
-          sx={{
-            color: theme.palette.text.secondary,
-            borderColor: theme.palette.text.secondary,
-            '&:hover': {
-              borderColor: theme.palette.secondary.main,
-            },
-          }}
+          sx={getButtonStyle()}
         >
           Login with Apple
         </Button>
@@ -93,7 +94,10 @@ const Login = () => {
           <Typography>{modalText}</Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenModal(false)} color="primary" sx={{ color: (theme) => theme.palette.text.secondary }}>
+          <Button
+            onClick={() => setOpenModal(false)}
+            sx={{ color: textColor }}
+          >
             OK
           </Button>
         </DialogActions>

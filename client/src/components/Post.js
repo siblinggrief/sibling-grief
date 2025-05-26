@@ -71,8 +71,12 @@ const Post = ({ post, onPostDeleted }) => {
     <>
       <Card
         sx={{
-          backgroundColor: theme.palette.text.primary,
-          color: theme.palette.text.black,
+          backgroundColor: theme.palette.background.paper, // correct use of theme
+          color: theme.palette.text.primary,               // font color adjusts per theme
+          border: `1px solid ${theme.palette.mode === 'dark' ? '#424242' : '#e0e0e0'}`,
+          boxShadow: theme.palette.mode === 'dark'
+            ? '0 2px 6px rgba(255, 255, 255, 0.08)'
+            : '0 2px 4px rgba(0, 0, 0, 0.08)',
           borderRadius: 3,
           maxWidth: "100%",
           margin: "20px auto",
@@ -93,7 +97,7 @@ const Post = ({ post, onPostDeleted }) => {
                 {displayName || "Anonymous"}
               </Typography>
             </Stack>
-            <Typography variant="caption" sx={{ color: theme.palette.background.paper }}>
+            <Typography variant="caption" sx={{ color: theme.palette.text.primary }}>
               {createdDate?.toLocaleString() || "Unknown date"}
             </Typography>
             <Box>

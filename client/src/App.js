@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebaseConfig";
+
 import { AuthProvider } from "./context/AuthContext";
+import { PostsProvider } from "./context/PostsContext";
+import { AppThemeProvider } from "./context/ThemeContext";
 
 import Home from "./pages/Home";
 import RequireAdmin from "./components/RequireAdmin";
@@ -16,10 +19,9 @@ import SelfCare from "./pages/SelfCare";
 import TagPage from "./pages/TagPage";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
-import Subscribe from "./pages/Subscribe"; 
-import theme from "./styles/theme";
+import Subscribe from "./pages/Subscribe";
+
 import "./styles/theme-variables.css";
-import { PostsProvider } from "./context/PostsContext";
 
 const App = () => {
   const [user, setUser] = useState(null);
@@ -36,7 +38,7 @@ const App = () => {
   if (loading) return null;
 
   return (
-    <ThemeProvider theme={theme}>
+    <AppThemeProvider>
       <CssBaseline />
       <AuthProvider>
         <PostsProvider>
@@ -67,7 +69,7 @@ const App = () => {
           </Router>
         </PostsProvider>
       </AuthProvider>
-    </ThemeProvider>
+    </AppThemeProvider>
   );
 };
 

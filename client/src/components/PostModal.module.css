@@ -1,6 +1,4 @@
 .modalPaper {
-    background-color: var(--color-light-grey); /* Very light grey */
-    color: var(--color-text-black, #000000);
     padding: 16px;
     border-radius: 12px;
   }
@@ -22,7 +20,6 @@
     width: 180px;
     font-weight: 600;
     padding-top: 8px;
-    color: var(--color-text-black, #000000);
   }
   
   .inputBox {
@@ -54,7 +51,7 @@
   
   .recordButton {
     background-color: #ffeb3b !important;
-    color: #0d47a1;
+    color: var(--color-header) !important;
     border: 1px solid var(--record-bg, #ffeb3b) !important;
     border-radius: 20px;
     padding: 8px 16px;
