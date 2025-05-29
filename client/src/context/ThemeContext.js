@@ -1,24 +1,35 @@
-import React, { createContext, useState, useContext, useMemo, useEffect } from 'react';
+import React, { createContext, useState, useContext, useMemo, useEffect, useCallback } from 'react';
 import { ThemeProvider, CssBaseline } from '@mui/material';
-import theme from '../styles/theme'; // unified theme function
+import theme from '../styles/theme'; // your theme function
 
-const ThemeContext = createContext();
+const ThemeContext = createContext({
+  mode: 'dark',
+  toggleTheme: () => {},
+});
 
 export const useAppTheme = () => useContext(ThemeContext);
 
 export const AppThemeProvider = ({ children }) => {
   const [mode, setMode] = useState('dark');
 
+  // On mount, load saved mode or fallback to system preference
   useEffect(() => {
     const saved = localStorage.getItem('appTheme');
-    if (saved) setMode(saved);
+    if (saved === 'light' || saved === 'dark') {
+      setMode(saved);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      setMode(prefersDark ? 'dark' : 'light');
+    }
   }, []);
 
-  const toggleTheme = () => {
-    const newMode = mode === 'dark' ? 'light' : 'dark';
-    setMode(newMode);
-    localStorage.setItem('appTheme', newMode);
-  };
+  const toggleTheme = useCallback(() => {
+    setMode((prevMode) => {
+      const newMode = prevMode === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('appTheme', newMode);
+      return newMode;
+    });
+  }, []);
 
   const muiTheme = useMemo(() => theme(mode), [mode]);
 

@@ -24,6 +24,7 @@ import { useAuth } from "../context/AuthContext";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import styles from "./Header.module.css";
+import Toggle from "./Toggle";
 
 const Header = () => {
   const { user, role } = useAuth();
@@ -159,6 +160,11 @@ const Header = () => {
                     </ListItemButton>
                   </ListItem>
                 )}
+                <ListItem disablePadding>
+                  <Box px={2}>
+                    <Toggle />
+                  </Box>
+                </ListItem>
               </List>
             </Drawer>
           </>
@@ -205,6 +211,7 @@ const Header = () => {
                 <SearchIcon />
               </IconButton>
             </Box>
+            <Toggle />
             {user && (
               <Box>
                 <Button
