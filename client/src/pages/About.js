@@ -1,7 +1,8 @@
 import React from "react";
-import { Typography, Container, Box } from "@mui/material";
+import { Typography, Container, Box, useTheme } from "@mui/material";
 
 const About = () => {
+  const theme = useTheme();
   return (
     <>
       {/* Quote Section with Background Image */}
@@ -41,7 +42,13 @@ const About = () => {
 
       {/* Main About Content */}
       <Container>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" 
+        sx={{
+            mb: 2,
+            textAlign: "center",
+            color: theme.palette.success.main,
+          }}
+        gutterBottom>
           About Us
         </Typography>
         <Typography variant="body1">

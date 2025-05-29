@@ -78,7 +78,7 @@ const ToPrepare = () => {
   const theme = useTheme();
 
   return (
-    <Box sx={{ px: 3, py: 4, maxWidth: 800, mx: "auto" }}>
+    <Box sx={{ px: 3, py: 4 }}>
       <Typography
         variant="h4"
         sx={{ mb: 2, textAlign: "center", color: theme.palette.success.main }}

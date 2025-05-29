@@ -1,5 +1,4 @@
-import React from "react";
-import { Container, Typography, Box, useTheme } from "@mui/material";
+import { Container, Typography, useTheme } from "@mui/material";
 import MisconceptionTruthBlock from "./Self-Care/MisconceptionTruthBlock";
 import SelfCareTips from "./Self-Care/SelfCareTips";
 
@@ -7,8 +6,14 @@ const SelfCare = () => {
   const theme = useTheme();
 
   return (
-    <Container maxWidth="md" sx={{ paddingY: 4 }}>
-      <Typography variant="h4" gutterBottom>
+    <Container sx={{ paddingY: 4 }}>
+      <Typography variant="h4" 
+        sx={{
+            mb: 2,
+            textAlign: "center",
+            color: theme.palette.success.main,
+          }}
+          gutterBottom>
         Self-Care
       </Typography>
 
