@@ -1,8 +1,10 @@
+import { lightGreen } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 const commonColors = {
   darkGreen: '#0e3b25',
   mediumGreen: '#14532d',
+  lightGreen: '#6fa070',
   darkGrey: '#3d3d3d',
   grey: '#888888',
   white: '#ffffff',
@@ -27,6 +29,7 @@ const theme = (mode) =>
             custom: {
               darkGreen: commonColors.darkGreen,
               mediumGreen: commonColors.mediumGreen,
+              lightGreen: commonColors.lightGreen,
               darkGrey: commonColors.darkGrey,
               grey: commonColors.grey,
               white: commonColors.white,
@@ -49,6 +52,7 @@ const theme = (mode) =>
             custom: {
               darkGreen: commonColors.darkGreen,
               mediumGreen: commonColors.mediumGreen,
+              lightGreen: commonColors.lightGreen,
               darkGrey: commonColors.darkGrey,
               grey: commonColors.grey,
               white: commonColors.white,

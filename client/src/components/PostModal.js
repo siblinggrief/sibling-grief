@@ -93,7 +93,13 @@ const PostModal = ({
       onClose={onClose}
       maxWidth="xl"
     >
-      <DialogContent className={styles.modalPaper}>
+      <DialogContent className={styles.modalPaper}
+        sx={{
+            backgroundColor: theme.palette.mode === "dark" 
+              ? theme.palette.grey[900] 
+              : theme.palette.background.default,
+            color: theme.palette.text.primary,
+          }}>
         {/* Header */}
         <Box className={styles.header}>
           <IconButton onClick={onClose}>
@@ -153,6 +159,12 @@ const PostModal = ({
                           : [...prev, topic]
                       )
                     }
+                    sx={{
+                    color: theme.palette.mode === "dark" ? theme.palette.custom.white : undefined,
+                    '&.Mui-checked': {
+                      color: theme.palette.mode === "dark" ? theme.palette.custom.lightGreen : theme.palette.custom.darkGreen,
+                    },
+                  }}
                   />
                 }
                 label={topic}
@@ -169,6 +181,12 @@ const PostModal = ({
               <Checkbox
                 checked={voiceOnly}
                 onChange={handleVoiceToggle}
+                sx={{
+                    color: theme.palette.mode === "dark" ? theme.palette.custom.white : undefined,
+                    '&.Mui-checked': {
+                      color: theme.palette.mode === "dark" ? theme.palette.custom.lightGreen : theme.palette.custom.darkGreen,
+                    },
+                }}
               />
             }
             label="Yes"
