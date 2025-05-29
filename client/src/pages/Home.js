@@ -9,7 +9,7 @@ const Home = () => {
   const { user } = useAuth();
 
   return (
-    <Box sx={{ px: 3, py: 4, maxWidth: 800, mx: "auto" }}>
+    <Box sx={{ px: 3, py: 4 }}>
       <Typography
         variant="h4"
         sx={{
@@ -51,7 +51,7 @@ const Home = () => {
       </Typography>
 
       {!user && 
-      <Box sx={{ px: 3, py: 4, maxWidth: 800, mx: "auto", textAlign: "center" }}>
+      <Box sx={{ px: 3, py: 4, textAlign: "center" }}>
         <Button
           variant="outlined"
           onClick={() => navigate("/login")}
