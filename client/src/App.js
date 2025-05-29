@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebaseConfig";
@@ -20,6 +20,8 @@ import TagPage from "./pages/TagPage";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import Subscribe from "./pages/Subscribe";
+import NotFound from "./pages/NotFound";
+import NotAuthorized from "./pages/NotAuthorized";
 
 import "./styles/theme-variables.css";
 
@@ -45,6 +47,7 @@ const App = () => {
           <Router>
             <Layout>
               <Routes>
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/to-share" element={<ToShare />} />
@@ -53,17 +56,9 @@ const App = () => {
                 <Route path="/self-care" element={<SelfCare />} />
                 <Route path="/tag/:tagName" element={<TagPage />} />
                 <Route path="/subscribe" element={<Subscribe />} />
-
-                {user ? (
-                  <>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
-                  </>
-                ) : (
-                  <Route path="/" element={<Navigate to="/login" />} />
-                )}
-
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path="/not-authorized" element={<NotAuthorized />} />
+                <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>
           </Router>

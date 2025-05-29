@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; 
 import { useTheme } from "@mui/material/styles";
 import { Box, Button } from "@mui/material";
 import PostModal from "./PostModal";
+import LoginPromptModal from "./LoginPromptModal";
 import API_URL from "../config";
 import { useAuth } from "../context/AuthContext";
 
@@ -11,6 +13,7 @@ const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 const AddNewPost = ({ onPostAdded }) => {
   const { user } = useAuth();
   const theme = useTheme();
+  const navigate = useNavigate();
   const displayName = user?.displayName;
   const photoURL = user?.photoURL;
 
@@ -19,6 +22,7 @@ const AddNewPost = ({ onPostAdded }) => {
 
   const [open, setOpen] = useState(false);
   const [formError, setFormError] = useState("");
+  const [loginPromptOpen, setLoginPromptOpen] = useState(false);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -36,9 +40,8 @@ const AddNewPost = ({ onPostAdded }) => {
 
   const handleOpen = () => {
     if (!user) {
-      setFormError("Please log in to share a post.");
-      setOpen(true);
-      return;
+    setLoginPromptOpen(true);
+    return;
     }
 
     setAudioBlob(null);
@@ -227,6 +230,15 @@ const AddNewPost = ({ onPostAdded }) => {
         handleSubmit={handleSubmit}
         formError={formError}
         setFormError={setFormError}
+      />
+
+      <LoginPromptModal
+        open={loginPromptOpen}
+        onClose={() => setLoginPromptOpen(false)}
+        onLogin={() => {
+          setLoginPromptOpen(false);
+          navigate("/login");
+        }}
       />
     </>
   );

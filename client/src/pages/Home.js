@@ -1,8 +1,12 @@
 import React from "react";
-import { Box, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
+  const { user } = useAuth();
 
   return (
     <Box sx={{ px: 3, py: 4, maxWidth: 800, mx: "auto" }}>
@@ -45,6 +49,26 @@ const Home = () => {
       >
         Both written and audio posts will be shown below once they’re approved.
       </Typography>
+
+      {!user && 
+      <Box sx={{ px: 3, py: 4, maxWidth: 800, mx: "auto", textAlign: "center" }}>
+        <Button
+          variant="outlined"
+          onClick={() => navigate("/login")}
+          sx={{
+            backgroundColor: theme.palette.custom.darkGreen,      
+            color: theme.palette.custom.white,                 
+            "&:hover": {
+              backgroundColor: theme.palette.custom.mediumGreen,   
+            },
+            textTransform: "none",
+            fontWeight: 400,
+          }}
+        >
+          Go to Login
+        </Button>
+      </Box>
+      }
     </Box>
   );
 };
