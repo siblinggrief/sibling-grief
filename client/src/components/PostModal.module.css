@@ -15,6 +15,12 @@
     gap: 12px;
     margin: 12px 0;
   }
+
+  .singleColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
   
   .label {
     width: 180px;
@@ -34,7 +40,6 @@
   /* This keeps the TextField filled area light */
   .inputBox input,
   .inputBox textarea {
-    background-color: var(--color-light-grey); 
     color: var(--color-text-black, #000000);
   }
   
@@ -108,5 +113,11 @@
     margin-bottom: 12px;
     font-size: 0.9rem;
     margin-left: 192px;
+  }
+
+  @media screen and (max-width: 600px) {
+    .error {
+      margin-left: 0px !important;
+  }
   }
   

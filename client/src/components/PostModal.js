@@ -7,13 +7,14 @@ import {
   TextField,
   Box,
   Typography,
-  useTheme,
   FormGroup,
   FormControlLabel,
   Checkbox,
   IconButton,
   Avatar,
-  Button
+  Button,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import { ArrowBack, Mic } from "@mui/icons-material";
 import { useAuth } from "../context/AuthContext";
@@ -40,6 +41,7 @@ const PostModal = ({
   setFormError,
 }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const { user } = useAuth();
   const displayName = user?.displayName;
   const photoURL = user?.photoURL;
@@ -112,7 +114,7 @@ const PostModal = ({
         <Typography variant="h6" mt={2}>Share your story</Typography>
 
         {/* Title */}
-        <Box className={styles.twoColumn}>
+        <Box className={isMobile ? styles.singleColumn : styles.twoColumn}>
           <Typography className={styles.label}>Title:</Typography>
           <TextField
             fullWidth
@@ -195,7 +197,7 @@ const PostModal = ({
 
         {/* Description */}
         {!voiceOnly && (
-          <Box className={styles.twoColumn}>
+          <Box className={isMobile ? styles.singleColumn : styles.twoColumn}>
             <Typography className={styles.label}>What would you like to share?</Typography>
             <TextField
               multiline

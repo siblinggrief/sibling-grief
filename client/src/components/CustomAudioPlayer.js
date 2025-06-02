@@ -1,13 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { FaHeadphones } from 'react-icons/fa';
-import { Typography, Box, IconButton } from '@mui/material';
-import { useTheme } from "@mui/material/styles";
+import { Typography, Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
 
 const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
   const [isVisible, setIsVisible] = useState(false);
   const audioRef = useRef(null);
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const shouldApplyFullWidth = !isMobile;
+
 
   const handleToggleVisibility = () => {
     setIsVisible((prev) => !prev);
@@ -66,9 +69,9 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
           ref={audioRef}
           controls
           style={{
-            width: '100%',
             height: '40px', // Match this to the container's height
             display: isVisible ? 'block' : 'none',
+            ...(shouldApplyFullWidth && { width: '100%' }),
           }}
         >
           <source src={audioUrl} type="audio/webm" />
