@@ -25,6 +25,13 @@ const ToShare = () => {
     if (sortOption === 'oldest') {
       return sortedArray.sort((a, b) => a.createdAt._seconds - b.createdAt._seconds);
     }
+    if (sortOption === 'mostReactions') {
+      return sortedArray.sort((a, b) => {
+        const aReactions = Object.values(a.counts || {}).reduce((sum, val) => sum + val, 0);
+        const bReactions = Object.values(b.counts || {}).reduce((sum, val) => sum + val, 0);
+        return bReactions - aReactions;
+      });
+    }
     // If more sort options are added in the future, handle them here
     return sortedArray;
   }, [posts, sortOption]);

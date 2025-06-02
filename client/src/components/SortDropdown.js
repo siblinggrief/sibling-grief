@@ -38,6 +38,7 @@ const SortDropdown = ({ sortOption, setSortOption }) => {
         >
           <MenuItem value="newest">Newest First</MenuItem>
           <MenuItem value="oldest">Oldest First</MenuItem>
+          <MenuItem value="mostReactions">Most Reactions</MenuItem>
         </Select>
       </FormControl>
     </Box>

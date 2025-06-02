@@ -66,7 +66,7 @@ const Post = ({ post, onPostDeleted }) => {
   const handleShare = () => {
     setShowShareMenu(true);
   };
-
+  
   return (
     <>
       <Card
@@ -189,6 +189,7 @@ const Post = ({ post, onPostDeleted }) => {
                 {emoji} {post.counts?.[emoji] || 0}
               </span>
             ))}
+
           </Box>
 
             <Box
