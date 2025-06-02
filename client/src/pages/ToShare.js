@@ -2,11 +2,13 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
-import { Typography, Box, CircularProgress, Snackbar, Alert } from '@mui/material';
+import { Typography, Box, CircularProgress, Snackbar, Alert, useTheme } from '@mui/material';
 import { usePosts } from '../context/PostsContext';
 import SortDropdown from '../components/SortDropdown';
 
 const ToShare = () => {
+  const theme = useTheme();
+    
   const { posts, fetchPosts, deletePost, loading, setHasFetched } = usePosts();
 
   const [searchParams] = useSearchParams();
@@ -89,7 +91,7 @@ const ToShare = () => {
 
       {loading ? (
         <Box display="flex" justifyContent="center" mt={3}>
-          <CircularProgress />
+          <CircularProgress sx={{ color: theme.palette.custom.darkGreen }}/>
         </Box>
       ) : sortedPosts.length > 0 ? (
         sortedPosts.map((post) => (
