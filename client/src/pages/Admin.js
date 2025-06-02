@@ -21,6 +21,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from '../components/DeleteDialog';
+import CustomAudioPlayer from '../components/CustomAudioPlayer';
 
 const Admin = () => {
   const { user, role } = useAuth();
@@ -29,6 +30,7 @@ const Admin = () => {
   const [selectedPostId, setSelectedPostId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [expandedRows, setExpandedRows] = useState({});
 
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -42,6 +44,13 @@ const Admin = () => {
 
   const handleCloseSnackbar = () => {
     setSnackbar((prev) => ({ ...prev, open: false }));
+  };
+
+  const toggleDescription = (postId) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
   };
 
   useEffect(() => {
@@ -99,13 +108,13 @@ const Admin = () => {
 
   return (
     <Box>
-      {/* 👇 Embed FilterButtons and pass required props */}
       <FilterButtons filter={filter} setFilter={setFilter} />
 
-      <Table>
-        <TableHead>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Table sx={{ minWidth: 925, marginTop: 2 }}>
+          <TableHead>
           <TableRow>
-            {['Title', 'Author', 'Created At', 'Status', 'Actions'].map((header) => (
+            {['Title', 'Author', 'Description', 'Audio', 'Created At', 'Status', 'Actions'].map((header) => (
               <TableCell
                 key={header}
                 sx={{
@@ -119,73 +128,115 @@ const Admin = () => {
             ))}
           </TableRow>
         </TableHead>
-        <TableBody>
-          {filteredPosts.length === 0 ? (
-            <TableRow>
-              <TableCell colSpan={5} align="center">
-                No posts found.
-              </TableCell>
-            </TableRow>
-          ) : (
-            filteredPosts.map((post) => (
-              <TableRow key={post.id}>
-                <TableCell>{post.title}</TableCell>
-                <TableCell>{post.displayName || 'N/A'}</TableCell>
-                <TableCell>{new Date(post.createdAt?._seconds * 1000).toLocaleString()}</TableCell>
-                <TableCell>
-                  <Chip
-                    label={post.status || 'N/A'}
-                    color={
-                      post.status === 'approved'
-                        ? 'success'
-                        : post.status === 'rejected'
-                        ? 'error'
-                        : post.status === 'pending'
-                        ? 'info'
-                        : 'warning'
-                    }
-                  />
-                </TableCell>
-                <TableCell>
-                  {post.status === 'pending' ? (
-                    <>
-                      <Tooltip title="Approve">
-                        <IconButton
-                          onClick={() => handleStatusChange(post.id, 'approved')}
-                          color="success"
-                          size="small"
-                        >
-                          <CheckCircleIcon />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Reject">
-                        <IconButton
-                          onClick={() => handleStatusChange(post.id, 'rejected')}
-                          color="error"
-                          size="small"
-                        >
-                          <CancelIcon />
-                        </IconButton>
-                      </Tooltip>
-
-                      <Tooltip title="Delete Post">
-                        <IconButton
-                          onClick={() => handleOpenDeleteDialog(post.id)}
-                          color="error"
-                          size="small"
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </>
-                  ) : '-'}
+          <TableBody>
+            {filteredPosts.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} align="center">
+                  No posts found.
                 </TableCell>
               </TableRow>
-            ))
-          )}
-        </TableBody>
-      </Table>
+            ) : (
+              filteredPosts.map((post) => (
+                <TableRow key={post.id} className='post-row'>
+                  <TableCell sx={{ width: '10%' }}>{post.title}</TableCell>
+                  <TableCell sx={{ width: '5%' }}>{post.displayName || 'N/A'}</TableCell>
+                  <TableCell
+                    sx={{
+                      width: '15%',
+                      whiteSpace: 'pre-wrap',
+                      wordWrap: 'break-word',
+                      cursor: 'pointer',
+                      position: 'relative',
+                      paddingRight: '1rem',
+                    }}
+                    onClick={() => toggleDescription(post.id)}
+                  >
+                    <Typography variant="body2" component="span">
+                      {expandedRows[post.id]
+                        ? post.description
+                        : post.description?.length > 100
+                          ? `${post.description.slice(0, 100)}...`
+                          : post.description || '—'}
+                    </Typography>
+
+                    {post.description?.length > 100 && (
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: 'primary.main',
+                          position: 'absolute',
+                          bottom: 0,
+                          right: 4,
+                        }}
+                      >
+                        {expandedRows[post.id] ? 'Show less' : 'Show more'}
+                      </Typography>
+                    )}
+                  </TableCell>
+
+                  <TableCell sx={{ width: '25%' }}>
+                    {post.audioUrl && post.audioUrl.startsWith('http') ? 
+                    <CustomAudioPlayer audioUrl={post.audioUrl} audioDuration={post.audioDuration}/> : (
+                      '—'
+                    )}
+                  </TableCell>
+                  <TableCell sx={{ width: '15%' }}>{new Date(post.createdAt?._seconds * 1000).toLocaleString()}</TableCell>
+                  <TableCell sx={{ width: '5%' }}>
+                    <Chip
+                      label={post.status || 'N/A'}
+                      color={
+                        post.status === 'approved'
+                          ? 'success'
+                          : post.status === 'rejected'
+                          ? 'error'
+                          : post.status === 'pending'
+                          ? 'info'
+                          : 'warning'
+                      }
+                    />
+                  </TableCell>
+                  <TableCell sx={{ width: '25%' }}>
+                    {post.status === 'pending' ? (
+                      <>
+                        <Tooltip title="Approve">
+                          <IconButton
+                            onClick={() => handleStatusChange(post.id, 'approved')}
+                            color="success"
+                            size="small"
+                          >
+                            <CheckCircleIcon />
+                          </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Reject">
+                          <IconButton
+                            onClick={() => handleStatusChange(post.id, 'rejected')}
+                            color="error"
+                            size="small"
+                          >
+                            <CancelIcon />
+                          </IconButton>
+                        </Tooltip>
+
+                        <Tooltip title="Delete Post">
+                          <IconButton
+                            onClick={() => handleOpenDeleteDialog(post.id)}
+                            color="error"
+                            size="small"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </>
+                    ) : '-'}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </Box>
+
        <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
