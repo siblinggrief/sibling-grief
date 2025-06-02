@@ -20,6 +20,7 @@ import TagPage from "./pages/TagPage";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import Subscribe from "./pages/Subscribe";
+import SearchResults from "./pages/SearchResults";
 import NotFound from "./pages/NotFound";
 import NotAuthorized from "./pages/NotAuthorized";
 
@@ -55,6 +56,7 @@ const App = () => {
                 <Route path="/to-prepare" element={<ToPrepare />} />
                 <Route path="/self-care" element={<SelfCare />} />
                 <Route path="/tag/:tagName" element={<TagPage />} />
+                <Route path="/search" element={<SearchResults />} />
                 <Route path="/subscribe" element={<Subscribe />} />
                 <Route path="/not-authorized" element={<NotAuthorized />} />
                 <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />

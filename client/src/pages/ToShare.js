@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
 import { Typography, Box, CircularProgress } from '@mui/material';
@@ -7,6 +8,10 @@ import SortDropdown from '../components/SortDropdown';
 
 const ToShare = () => {
   const { posts, fetchPosts, deletePost, loading, setHasFetched } = usePosts();
+
+  const [searchParams] = useSearchParams();
+  const targetPostId = searchParams.get("highlight");
+  const postRefs = useRef({});
   
   const [sortOption, setSortOption] = useState('newest');
 
@@ -23,6 +28,16 @@ const ToShare = () => {
     // If more sort options are added in the future, handle them here
     return sortedArray;
   }, [posts, sortOption]);
+
+  useEffect(() => {
+    if (!loading && targetPostId && postRefs.current[targetPostId]) {
+      postRefs.current[targetPostId].scrollIntoView({ behavior: "smooth", block: "start" });
+      postRefs.current[targetPostId].classList.add("highlighted-post");
+      setTimeout(() => {
+        postRefs.current[targetPostId].classList.remove("highlighted-post");
+      }, 3000); // remove highlight after 3 seconds
+    }
+  }, [loading, targetPostId]);
 
   useEffect(() => {
     fetchPosts();
@@ -57,7 +72,12 @@ const ToShare = () => {
         </Box>
       ) : sortedPosts.length > 0 ? (
         sortedPosts.map((post) => (
-          <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
+          <div
+            key={post.id}
+            ref={(el) => (postRefs.current[post.id] = el)}
+          >
+            <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
+          </div>
         ))
       ) : (
         <Typography variant="body2" textAlign="center" mt={4}>

@@ -25,6 +25,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import styles from "./Header.module.css";
 import Toggle from "./Toggle";
+import SearchSuggestions from "./SearchSuggestions";
 
 const Header = () => {
   const { user, role } = useAuth();
@@ -103,20 +104,8 @@ const Header = () => {
             </Box>
             {showSearch && (
               <Box>
-                <InputBase
-                  placeholder="Search…"
-                  inputProps={{
-                    "aria-label": "search",
-                    style: { color: theme.palette.text.primary },
-                  }}
-                  className={styles.searchInput}
-                  sx={{
-                    "&::placeholder": {
-                      color: theme.palette.text.secondary,
-                    },
-                  }}
-                />
-              </Box>
+              <SearchSuggestions onSelect={(post) => navigate(`/to-share?highlight=${post.id}`)} />
+            </Box>
             )}
             <Drawer
               anchor="left"
@@ -193,23 +182,8 @@ const Header = () => {
                 </NavLink>
               ))}
             </Box>
-            <Box className={styles.searchWrapper}>
-              <InputBase
-                placeholder="Search…"
-                inputProps={{
-                  "aria-label": "search",
-                  style: { color: theme.palette.custom.darkGreen }
-                }}
-                className={styles.searchInput}
-                sx={{
-                  "&::placeholder": {
-                    color: theme.palette.custom.darkGreen,
-                  },
-                }}
-              />
-              <IconButton type="submit" size="small" aria-label="search">
-                <SearchIcon />
-              </IconButton>
+            <Box>
+              <SearchSuggestions onSelect={(post) => navigate(`/to-share?highlight=${post.id}`)} />
             </Box>
             <Toggle />
             {user && (
