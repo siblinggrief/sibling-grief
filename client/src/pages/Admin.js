@@ -179,27 +179,29 @@ const Admin = () => {
               />
             </Box>
 
-            {post.status === 'pending' && (
               <Box sx={{ marginTop: 1, display: 'flex', gap: 1 }}>
-                <Tooltip title="Approve">
-                  <IconButton onClick={() => handleStatusChange(post.id, 'approved')} color="success" size="small">
-                    <CheckCircleIcon />
-                  </IconButton>
-                </Tooltip>
+                {post.status === 'pending' && (
+                <>
+                  <Tooltip title="Approve">
+                    <IconButton onClick={() => handleStatusChange(post.id, 'approved')} color="success" size="small">
+                      <CheckCircleIcon />
+                    </IconButton>
+                  </Tooltip>
 
-                <Tooltip title="Reject">
-                  <IconButton onClick={() => handleStatusChange(post.id, 'rejected')} color="error" size="small">
-                    <CancelIcon />
-                  </IconButton>
-                </Tooltip>
-
+                  <Tooltip title="Reject">
+                    <IconButton onClick={() => handleStatusChange(post.id, 'rejected')} color="error" size="small">
+                      <CancelIcon />
+                    </IconButton>
+                  </Tooltip>
+                </>
+                )}
                 <Tooltip title="Delete Post">
                   <IconButton onClick={() => handleOpenDeleteDialog(post.id)} color="error" size="small">
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
               </Box>
-            )}
+
           </Box>
         ))}
       </Box>
@@ -290,7 +292,7 @@ const Admin = () => {
                       />
                     </TableCell>
                     <TableCell sx={{ width: '25%' }}>
-                      {post.status === 'pending' ? (
+                      {post.status === 'pending' && (
                         <>
                           <Tooltip title="Approve">
                             <IconButton
@@ -311,8 +313,9 @@ const Admin = () => {
                               <CancelIcon />
                             </IconButton>
                           </Tooltip>
-
-                          <Tooltip title="Delete Post">
+                        </>
+                        )}
+                        <Tooltip title="Delete Post">
                             <IconButton
                               onClick={() => handleOpenDeleteDialog(post.id)}
                               color="error"
@@ -320,9 +323,7 @@ const Admin = () => {
                             >
                               <DeleteIcon />
                             </IconButton>
-                          </Tooltip>
-                        </>
-                      ) : '-'}
+                        </Tooltip>
                     </TableCell>
                   </TableRow>
                 ))
