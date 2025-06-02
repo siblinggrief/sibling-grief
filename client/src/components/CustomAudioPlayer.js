@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
 import { FaHeadphones } from 'react-icons/fa';
 import { Typography, Box, IconButton } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
 
 const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
   const [isVisible, setIsVisible] = useState(false);
   const audioRef = useRef(null);
+
+  const theme = useTheme();
 
   const handleToggleVisibility = () => {
     setIsVisible((prev) => !prev);
@@ -28,7 +31,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
           gap: 1,
         }}
       >
-        <IconButton onClick={handleToggleVisibility} sx={{ color: 'primary.main' }}>
+        <IconButton onClick={handleToggleVisibility} sx={{ color:  theme.palette.mode === "dark" ? theme.palette.custom.lightGreen : theme.palette.custom.darkGreen }}>
           <FaHeadphones />
         </IconButton>
 
@@ -46,7 +49,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
           >
             {isVisible ? `Hide Audio` : `Listen to Audio`}
           </Typography>
-          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+          <Typography variant="caption" sx={{ color:  theme.palette.mode === "dark" ? theme.palette.custom.lightGreen : theme.palette.custom.darkGreen }}>
             {audioDuration} {`s`}
           </Typography>
         </Box>
