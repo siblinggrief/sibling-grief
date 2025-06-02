@@ -132,7 +132,7 @@ const Admin = () => {
             }}
           >
             <Typography variant="h6">{post.title}</Typography>
-            <Typography variant="subtitle2" color="text.secondary">
+            <Typography variant="subtitle2" color="text.primary">
               By {post.displayName || 'N/A'} on{' '}
               {new Date(post.createdAt?._seconds * 1000).toLocaleString()}
             </Typography>
@@ -146,7 +146,7 @@ const Admin = () => {
                 ? post.description
                 : post.description?.length > 100
                 ? `${post.description.slice(0, 100)}...`
-                : post.description || '—'}
+                : post.audioUrl ? '' : (post.description || '—')}
               {post.description?.length > 100 && (
                 <Typography
                   variant="caption"
