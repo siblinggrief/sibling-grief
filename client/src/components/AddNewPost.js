@@ -10,7 +10,7 @@ import { useAuth } from "../context/AuthContext";
 const CLOUDINARY_UPLOAD_URL = process.env.REACT_APP_CLOUDINARY_UPLOAD_URL;
 const CLOUDINARY_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
-const AddNewPost = ({ onPostAdded }) => {
+const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
   const { user } = useAuth();
   const theme = useTheme();
   const navigate = useNavigate();
@@ -181,6 +181,7 @@ const AddNewPost = ({ onPostAdded }) => {
     if (!response.ok) throw new Error("Failed to add post");
 
     onPostAdded();
+    onPostAddedSuccess();
     handleClose();
   } catch (error) {
     console.error("Error adding post:", error);

@@ -25,10 +25,10 @@ import { Timestamp } from "firebase/firestore";
 
 const EMOJIS = ['❤️', '🤗', '😢', '🌈', '🕊️'];
 
-const Post = ({ post, onPostDeleted }) => {
+const Post = ({ post, onPostDeleted, showSnackbar }) => {
   const { displayName, photoURL } = post;
   const theme = useTheme();
-  const { user } = useAuth();
+  const { user, role } = useAuth();
   const [openDialog, setOpenDialog] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -55,9 +55,11 @@ const Post = ({ post, onPostDeleted }) => {
       if (!response.ok) throw new Error("Failed to delete post");
 
       onPostDeleted(post.id);
+      showSnackbar("Post deleted successfully!");
       setOpenDialog(false);
     } catch (error) {
       console.error("Error deleting post:", error);
+      showSnackbar("Error deleting post", 'error');
     } finally {
       setIsDeleting(false);
     }
@@ -113,7 +115,7 @@ const Post = ({ post, onPostDeleted }) => {
               />
             </Dialog>
 
-              {user?.displayName === post?.displayName && (
+              {(role === 'admin' || user?.displayName === post?.displayName) && (
                 <IconButton onClick={() => setOpenDialog(true)} color="error">
                   <DeleteIcon />
                 </IconButton>

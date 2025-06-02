@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
-import { Typography, Box, CircularProgress } from '@mui/material';
+import { Typography, Box, CircularProgress, Snackbar, Alert } from '@mui/material';
 import { usePosts } from '../context/PostsContext';
 import SortDropdown from '../components/SortDropdown';
 
@@ -14,6 +14,20 @@ const ToShare = () => {
   const postRefs = useRef({});
   
   const [sortOption, setSortOption] = useState('newest');
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success', // success | error | warning | info
+  });
+
+  const showSnackbar = (message, severity = 'success') => {
+    setSnackbar({ open: true, message, severity });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   // Memoize the sorted posts to optimize performance and avoid unnecessary re-renders
   const sortedPosts = useMemo(() => {
@@ -70,7 +84,7 @@ const ToShare = () => {
       >
         <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
 
-        <AddNewPost onPostAdded={handleRefetchPosts} />
+        <AddNewPost onPostAdded={handleRefetchPosts} onPostAddedSuccess={() => showSnackbar("Post added successfully!")}/>
       </Box>
 
       {loading ? (
@@ -83,7 +97,7 @@ const ToShare = () => {
             key={post.id}
             ref={(el) => (postRefs.current[post.id] = el)}
           >
-            <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} />
+            <Post key={post.id} post={post} onPostDeleted={handlePostDeleted} showSnackbar={showSnackbar}/>
           </div>
         ))
       ) : (
@@ -91,6 +105,18 @@ const ToShare = () => {
           No posts yet. Be the first to share!
         </Typography>
       )}
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={30000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{ mt: '80px' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

@@ -9,18 +9,40 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Tooltip
+  Tooltip,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { usePosts } from '../context/PostsContext';
 import { useAuth } from '../context/AuthContext';
+import API_URL from "../config";
 import FilterButtons from '../components/FilterButtons';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteDialog from '../components/DeleteDialog';
 
 const Admin = () => {
   const { user, role } = useAuth();
-  const { posts, fetchPosts, updatePostStatus } = usePosts();
+  const { posts, fetchPosts, deletePost, updatePostStatus } = usePosts();
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [filter, setFilter] = useState('all');
+
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'success', // 'success' | 'error' | 'info' | 'warning'
+  });
+
+  const showSnackbar = (message, severity = 'success') => {
+    setSnackbar({ open: true, message, severity });
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
 
   useEffect(() => {
     fetchPosts();
@@ -34,6 +56,41 @@ const Admin = () => {
   const handleStatusChange = async (postId, status) => {
     await updatePostStatus(postId, status);
     fetchPosts(); // Refresh list
+  };
+
+  const handleOpenDeleteDialog = (postId) => {
+    setSelectedPostId(postId);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+    setSelectedPostId(null);
+  };
+
+  const handleDeletePost = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`${API_URL}/api/posts/${selectedPostId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) throw new Error('Failed to delete post');
+
+      deletePost(selectedPostId);
+      
+      showSnackbar('Post deleted successfully!', 'success');
+
+      setOpenDeleteDialog(false);
+      setSelectedPostId(null);
+      setIsDeleting(false);
+    } catch (error) {
+      console.error('Error deleting post:', error);
+       showSnackbar('Failed to delete post.', 'error'); 
+      setIsDeleting(false);
+      setOpenDeleteDialog(false);
+      setSelectedPostId(null);
+    }
   };
 
   if (role !== 'admin') {
@@ -111,6 +168,16 @@ const Admin = () => {
                           <CancelIcon />
                         </IconButton>
                       </Tooltip>
+
+                      <Tooltip title="Delete Post">
+                        <IconButton
+                          onClick={() => handleOpenDeleteDialog(post.id)}
+                          color="error"
+                          size="small"
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
                     </>
                   ) : '-'}
                 </TableCell>
@@ -119,6 +186,22 @@ const Admin = () => {
           )}
         </TableBody>
       </Table>
+       <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+      <DeleteDialog
+        open={openDeleteDialog}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleDeletePost}
+        isDeleting={isDeleting}
+      />
     </Box>
   );
 };

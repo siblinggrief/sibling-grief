@@ -16,7 +16,7 @@ const DeleteDialog = ({ open, onClose, onConfirm, isDeleting }) => {
           onClick={onClose}
           variant="outlined"
           sx={{
-            color: theme.palette.text.secondary,
+            color: theme.palette.text.primary,
             borderColor: theme.palette.text.secondary,
             "&:hover": {
               backgroundColor: theme.palette.action.hover,
