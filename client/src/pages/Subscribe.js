@@ -31,6 +31,17 @@ const Subscribe = () => {
     }
   }, [user]);
 
+  useEffect(() => {
+  if (status && message) {
+    const timer = setTimeout(() => {
+      setStatus("");
+      setMessage("");
+    }, 5000); 
+
+    return () => clearTimeout(timer); 
+  }
+  }, [status, message]);
+
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -217,6 +228,10 @@ const handleSubscribe = async () => {
         {status && (
           <Alert
             severity={status === "error" ? "error" : "success"}
+            onClose={() => {
+              setStatus("");
+              setMessage("");
+            }}
             sx={{ mt: 3 }}
           >
             {message}
