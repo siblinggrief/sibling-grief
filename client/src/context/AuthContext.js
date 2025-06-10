@@ -10,6 +10,45 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState("guest");
   const [authLoading, setAuthLoading] = useState(true);
   const [subscribers, setSubscribers] = useState([]);
+  const [adminRequests, setAdminRequests] = useState([]);
+
+  const updateAdminRequestsStatus = async (uid, reqId, status) => {
+    try {
+      const response = await fetch(`${API_URL}/api/${reqId}/update-admin-status?uid=${uid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update request status");
+
+      // Optional: Update local state optimistically
+      setAdminRequests((prev) =>
+        prev.map((request) =>
+          request.id === reqId ? { ...request, status } : request
+        )
+      );
+    } catch (error) {
+      console.error("Error updating request status:", error);
+    }
+  };
+  
+  const fetchAdminRequests = async (uid) => {
+    try {
+      const res = await fetch(`${API_URL}/api/request-admin?uid=${uid}`);
+      const data = await res.json();
+
+      if (res.ok) {
+        setAdminRequests(data || []);
+      } else {
+        console.error("Failed to fetch admin requests:", data.error);
+      }
+    } catch (err) {
+      console.error("Error fetching admin requests:", err);
+    }
+  };
 
    const fetchSubscribers = async (uid) => {
     try {
@@ -36,8 +75,10 @@ export const AuthProvider = ({ children }) => {
           setUser({ displayName, photoURL, uid, email });
           setRole(userRole);
 
+          // Fetch subscribers and admin requests if the user is an admin
          if (userRole === "admin") {
             await fetchSubscribers(uid);
+            await fetchAdminRequests(uid);
           }
         } catch (error) {
           console.error("Failed to fetch role or subscribers:", error);
@@ -48,6 +89,7 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         setRole("guest");
         setSubscribers([]);
+        setAdminRequests([]);
       }
       setAuthLoading(false);
     });
@@ -56,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, role, authLoading, subscribers, setSubscribers, fetchSubscribers }}>
+    <AuthContext.Provider value={{ user, role, authLoading, subscribers, setSubscribers, fetchSubscribers, adminRequests, setAdminRequests, fetchAdminRequests, updateAdminRequestsStatus }}>
       {children}
     </AuthContext.Provider>
   );

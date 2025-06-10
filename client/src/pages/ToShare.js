@@ -1,13 +1,17 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
 import Post from '../components/Post';
 import AddNewPost from '../components/AddNewPost';
-import { Typography, Box, CircularProgress, Snackbar, Alert, useTheme } from '@mui/material';
+import { Button, Typography, Box, CircularProgress, Snackbar, Alert, useTheme } from '@mui/material';
 import { usePosts } from '../context/PostsContext';
 import SortDropdown from '../components/SortDropdown';
+import RequestAdmin from '../components/RequestAdmin';
 
 const ToShare = () => {
   const theme = useTheme();
+
+  const { user, role } = useAuth();
     
   const { posts, fetchPosts, deletePost, loading, setHasFetched } = usePosts();
 
@@ -85,6 +89,12 @@ const ToShare = () => {
         mb={2}
       >
         <SortDropdown sortOption={sortOption} setSortOption={setSortOption} />
+
+        
+      {user && role !== "admin" && (
+        <RequestAdmin />
+      )}
+
 
         <AddNewPost onPostAdded={handleRefetchPosts} onPostAddedSuccess={() => showSnackbar("Post added successfully!")}/>
       </Box>

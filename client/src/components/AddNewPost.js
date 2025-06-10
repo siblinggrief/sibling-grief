@@ -193,7 +193,7 @@ const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
         <Button 
           onClick={handleOpen}
           variant="contained"
