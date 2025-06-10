@@ -39,10 +39,10 @@ const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
   }, [open]);
 
   const handleOpen = () => {
-    if (!user) {
-    setLoginPromptOpen(true);
-    return;
-    }
+    // if (!user) {
+    // setLoginPromptOpen(true);
+    // return;
+    // }
 
     setAudioBlob(null);
     setOpen(true);

@@ -304,7 +304,7 @@ const PostModal = ({
           </Button>
           <Button
             onClick={handleSubmit}
-            disabled={!user || !title.trim() || isSaving || (voiceOnly && !audioBlob)}
+            disabled={!title.trim() || isSaving || (voiceOnly && !audioBlob)}
             sx={{
               backgroundColor: theme.palette.custom.darkGreen,
               color: theme.palette.custom.white,          
