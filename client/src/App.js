@@ -21,6 +21,7 @@ import PostDetail from "./pages/PostDetail";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import Subscribe from "./pages/Subscribe";
+import Unsubscribe from "./pages/Unsubscribe";
 import SearchResults from "./pages/SearchResults";
 import NotFound from "./pages/NotFound";
 import NotAuthorized from "./pages/NotAuthorized";
@@ -72,6 +73,7 @@ const App = () => {
                 <Route path="/post/:postId" element={<PostDetail />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/subscribe" element={<Subscribe />} />
+                <Route path="/unsubscribe" element={<Unsubscribe />} />
                 <Route path="/not-authorized" element={<NotAuthorized />} />
                 <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
                 <Route path="*" element={<NotFound />} />

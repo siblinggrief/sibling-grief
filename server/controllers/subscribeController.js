@@ -22,6 +22,21 @@ const subscribeUser = async (req, res) => {
       subscribedAt: new Date(),
     });
 
+    // Send welcome email with unsubscribe link
+    await sendNewsletterEmail({
+      to: [email],
+      subject: "Welcome to Sibling Grief Weekly",
+      html: `
+        <h2>Welcome!</h2>
+        <p>Thank you for subscribing to our weekly sibling grief newsletter.</p>
+        <p>We’ll send you highlights from the community each week.</p>
+        <p style="margin-top: 20px;">
+          If you ever wish to unsubscribe, click 
+          <a href="${process.env.APP_URL}/unsubscribe?email=${encodeURIComponent(email)}">here</a>.
+        </p>
+      `,
+    });
+
     res.status(200).json({ message: "Subscribed successfully" });
   } catch (error) {
     console.error("Subscribe error:", error);
@@ -137,11 +152,23 @@ const sendWeeklyNewsletter = async (req, res) => {
     }
     
     // 5. Send email
-    await sendNewsletterEmail({
-      to: ['Test Recipient <recipient@resend.dev>'],
-      subject: "Your Weekly Sibling Grief Digest",
-      html,
-    });
+    for (const email of recipients) {
+      const personalizedHtml = `
+        ${html}
+        <hr/>
+        <p style="font-size: 12px; text-align: center;">
+          <a href="${process.env.APP_URL}/unsubscribe?email=${encodeURIComponent(email)}">
+            Unsubscribe
+          </a> from future emails
+        </p>
+      `;
+
+      await sendNewsletterEmail({
+        to: [email],
+        subject: "Your Weekly Sibling Grief Digest",
+        html: personalizedHtml,
+      });
+    }
 
     res.status(200).json({ message: "Newsletter sent", recipientsCount: recipients.length });
   } catch (error) {
