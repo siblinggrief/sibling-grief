@@ -132,9 +132,11 @@ const Post = ({ post, onPostDeleted, showSnackbar }) => {
             </Box>
           </Stack>
 
-          <Typography variant="h5" sx={{ marginTop: 1 }}>
-            {post.title}
-          </Typography>
+          <Link to={`/post/${post.id}`} style={{ textDecoration: "none", color: "inherit" }}>
+            <Typography variant="h5" sx={{ marginTop: 1 }}>
+              {post.title}
+            </Typography>
+          </Link>
 
           {post.description && (
             <>

@@ -8,10 +8,12 @@ import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import styles from "./Sidebar.module.css";
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from "@mui/material/styles";
+import { usePosts } from '../context/PostsContext';
 
 const Sidebar = () => {
   const { role } = useAuth();
-    const theme = useTheme();
+  const theme = useTheme();
+  const { posts } = usePosts();
 
   const sidebarTopics = [
     { label: "Memories", tag: "Memory" },
@@ -19,8 +21,13 @@ const Sidebar = () => {
     { label: "Venting", tag: "Vent" },
     { label: "Achievements", tag: "Achievement" },
     { label: "The Day", tag: "Today" },
-  ];    
-    
+  ];   
+  
+  const top5Posts = [...posts]
+    .filter((post) => post.totalReactions > 0)
+    .sort((a, b) => b.totalReactions - a.totalReactions)
+    .slice(0, 5);
+      
   return (
     <Box className={styles.sidebar} sx={{ bgcolor: theme.palette.background.paper, color: theme.palette.text.primary}}>
       <nav className={styles.nav}>
@@ -106,12 +113,15 @@ const Sidebar = () => {
         </NavLink>
 
         <div className={styles.sectionHeading}>Top 5</div>
+        {top5Posts.map((post) => (
         <NavLink
-          to="/top-5"
-          className={({ isActive }) => (isActive ? styles.activeLink : styles.link)}
+          key={post.id}
+          to={`/post/${post.id}`}
+          className={({ isActive }) => (isActive ? styles.activeSubLink : styles.subLink)}
         >
-          
+          {post.title.length > 30 ? post.title.slice(0, 30) + '…' : post.title}
         </NavLink>
+      ))}
       </nav>
     </Box>
   );

@@ -108,14 +108,18 @@ const updateEmojiCount = async (req, res) => {
       [emoji]: (currentCounts[emoji] || 0) + 1,
     };
 
+    // Calculate total reaction count
+    const totalReactions = Object.values(updatedCounts).reduce((sum, count) => sum + count, 0);
+
     // Update Firestore document with new emoji counts
     await postRef.update({
       counts: updatedCounts,
+      totalReactions,
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     // Return updated post data
-    res.json({ id, updatedCounts });
+    res.json({ id, updatedCounts, totalReactions });
   } catch (error) {
     console.error("Error updating emoji count:", error);
     res.status(500).json({ error: "Failed to update emoji count" });

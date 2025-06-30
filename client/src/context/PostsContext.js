@@ -75,6 +75,21 @@ export const PostsProvider = ({ children }) => {
         if (!response.ok) {
           throw new Error("Failed to update emoji count in DB");
         }
+
+        const { updatedCounts, totalReactions } = await response.json();
+        
+        setPosts((prevPosts) =>
+              prevPosts.map((post) =>
+                post.id === postId
+                  ? {
+                      ...post,
+                      counts: updatedCounts,
+                      totalReactions,
+                    }
+                  : post
+              )
+            );
+
       } catch (error) {
         console.error("Error updating emoji count in backend:", error);
       }

@@ -40,6 +40,7 @@ const Header = () => {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      localStorage.removeItem('reactedPosts');
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);

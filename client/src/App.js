@@ -17,6 +17,7 @@ import ToCare from "./pages/ToCare";
 import ToPrepare from "./pages/ToPrepare";
 import SelfCare from "./pages/SelfCare";
 import TagPage from "./pages/TagPage";
+import PostDetail from "./pages/PostDetail";
 import Login from "./pages/Login";
 import Layout from "./components/Layout";
 import Subscribe from "./pages/Subscribe";
@@ -29,6 +30,18 @@ import "./styles/theme-variables.css";
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      localStorage.removeItem('reactedPosts');
+    };
+
+    window.addEventListener('beforeunload', handleUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -56,6 +69,7 @@ const App = () => {
                 <Route path="/to-prepare" element={<ToPrepare />} />
                 <Route path="/self-care" element={<SelfCare />} />
                 <Route path="/tag/:tagName" element={<TagPage />} />
+                <Route path="/post/:postId" element={<PostDetail />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/subscribe" element={<Subscribe />} />
                 <Route path="/not-authorized" element={<NotAuthorized />} />
