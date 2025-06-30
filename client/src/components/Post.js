@@ -42,6 +42,15 @@ const Post = ({ post, onPostDeleted, showSnackbar }) => {
   const createdDate = timestamp.toDate();
 
   const handleEmojiClick = (emoji) => {
+    const reactedPosts = JSON.parse(localStorage.getItem('reactedPosts') || '{}');
+
+     // If already reacted to this post, do nothing
+    if (reactedPosts[post.id]) return;
+
+    // Save emoji reaction for this post
+    reactedPosts[post.id] = emoji;
+    localStorage.setItem('reactedPosts', JSON.stringify(reactedPosts));
+    
     updateEmojiCount(post.id, emoji);
   };
 

@@ -23,6 +23,8 @@ import styles from "./PostModal.module.css";
 const PostModal = ({
   open,
   onClose,
+  authorName,
+  setAuthorName,
   title,
   setTitle,
   description,
@@ -112,6 +114,37 @@ const PostModal = ({
         </Box>
 
         <Typography variant="h6" mt={2}>Share your story</Typography>
+
+        <Box className={isMobile ? styles.singleColumn : styles.twoColumn}>
+          <Typography className={styles.label}>Your Name (optional):</Typography>
+          <TextField
+            fullWidth
+            value={authorName}
+            onChange={(e) => setAuthorName(e.target.value)}
+            className={styles.inputBox}
+            placeholder="Leave blank to post anonymously"
+            variant="outlined"
+            size="small"
+            slotProps={{
+              input: {
+                style: {
+                  color: theme.palette.text.black,
+                },
+              },
+              notchedOutline: {
+                style: {
+                  borderColor: theme.palette.text.black,
+                },
+              },
+            }}
+            onFocus={(e) => {
+              e.target.parentElement.style.borderColor = theme.palette.text.black;
+            }}
+            onBlur={(e) => {
+              e.target.parentElement.style.borderColor = "";
+            }}
+          />
+        </Box>
 
         {/* Title */}
         <Box className={isMobile ? styles.singleColumn : styles.twoColumn}>
@@ -321,6 +354,13 @@ const PostModal = ({
             {isSaving ? "Saving..." : "Save"}
           </Button>
         </Box>
+
+        <Box className={styles.note}>
+          <Typography variant="h8">
+            Note: Web admins can remove any post they deem not in line with the spirit of sharing.
+          </Typography>
+        </Box>
+        
       </DialogContent>
     </Dialog>
   );

@@ -67,7 +67,7 @@ const theme = (mode) =>
           }),
     },
     typography: {
-      fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+      fontFamily: "'Libre Baskerville', 'Georgia', 'serif'",
     },
   });
 

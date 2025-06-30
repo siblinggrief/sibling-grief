@@ -24,6 +24,7 @@ const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
   const [formError, setFormError] = useState("");
   const [loginPromptOpen, setLoginPromptOpen] = useState(false);
 
+  const [authorName, setAuthorName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [selectedTopics, setSelectedTopics] = useState([]);
@@ -158,10 +159,12 @@ const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
   }
 
   try {
+    const finalName = authorName.trim() || `Anonymous-${Math.floor(1000 + Math.random() * 9000)}`;
+
     const payload = {
       title,
       topics: selectedTopics,
-      displayName,
+      displayName: finalName,
       photoURL,
     };
 
@@ -215,6 +218,8 @@ const AddNewPost = ({ onPostAdded, onPostAddedSuccess }) => {
       <PostModal
         open={open}
         onClose={handleClose}
+        authorName={authorName}
+        setAuthorName={setAuthorName}
         title={title}
         setTitle={setTitle}
         description={description}

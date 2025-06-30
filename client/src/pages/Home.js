@@ -50,7 +50,7 @@ const Home = () => {
         Both written and audio posts will be shown below once they’re approved.
       </Typography>
 
-      {!user && 
+      {/* {!user && 
       <Box sx={{ px: 3, py: 4, textAlign: "center" }}>
         <Button
           variant="outlined"
@@ -68,7 +68,7 @@ const Home = () => {
           Go to Login
         </Button>
       </Box>
-      }
+      } */}
     </Box>
   );
 };

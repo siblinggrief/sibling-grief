@@ -115,6 +115,11 @@
     margin-left: 192px;
   }
 
+  .note {
+    color: var(--color-error-red);
+    margin-top: 12px;
+  }
+
   @media screen and (max-width: 600px) {
     .error {
       margin-left: 0px !important;

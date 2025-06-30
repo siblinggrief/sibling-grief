@@ -61,8 +61,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
       <Box
         sx={{
           flex: 1,
-          height: '40px', // Set this to the height of the audio controls
-          overflow: 'hidden',
+          height: 'auto', // Set this to the height of the audio controls
         }}
       >
         <audio
@@ -70,8 +69,7 @@ const CustomAudioPlayer = ({ audioUrl, audioDuration }) => {
           controls
           style={{
             height: '40px', // Match this to the container's height
-            display: isVisible ? 'block' : 'none',
-            ...(shouldApplyFullWidth && { width: '100%' }),
+            display: isVisible ? 'block' : 'none',         
           }}
         >
           <source src={audioUrl} type="audio/webm" />
