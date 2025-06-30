@@ -119,7 +119,7 @@ const Post = ({ post, onPostDeleted, showSnackbar }) => {
             <Dialog open={showShareMenu} onClose={() => setShowShareMenu(false)}>
               <ShareMenu
                 postTitle={post.title}
-                postUrl={window.location.href}
+                postUrl={`${window.location.origin}/post/${post.id}`}
                 onClose={() => setShowShareMenu(false)}
               />
             </Dialog>

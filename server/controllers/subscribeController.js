@@ -134,7 +134,7 @@ const sendWeeklyNewsletter = async (req, res) => {
           <h3 style="margin-top: 0px;">${post.title}</h3>
           <p>${post.description?.slice(0, 1000)}...</p>
           <a 
-            href="${process.env.APP_URL}/to-share?highlight=${post.id}" 
+            href="${process.env.APP_URL}/post/${post.id}"
             target="_blank" 
             style="color: #2a7f62; text-decoration: underline;">
             View this post
