@@ -29,7 +29,7 @@ const createPost = async (req, res) => {
       topics: Array.isArray(topics) ? topics : [],
       displayName,
       photoURL,
-      status: "pending",
+      status: "approved",
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
     };
 

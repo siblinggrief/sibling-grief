@@ -278,7 +278,7 @@ const PostModal = ({
                     <Mic />
                   )
                 }
-                disabled={!user || recordingStatus === "completed" || isStartingRecording}
+                disabled={recordingStatus === "completed" || isStartingRecording}
               >
                 {isStartingRecording
                   ? "Starting..."
@@ -304,7 +304,7 @@ const PostModal = ({
         )}
 
         {/* Form Error */}
-        {formError && (
+        {/* {formError && (
           <div className={styles.error}>
             {formError.includes("log in") ? (
               <>
@@ -314,7 +314,7 @@ const PostModal = ({
               formError
             )}
           </div>
-        )}
+        )} */}
 
         {/* Action Buttons */}
         <Box className={styles.actions}>
