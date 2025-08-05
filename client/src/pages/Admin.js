@@ -115,9 +115,9 @@ const Admin = () => {
     }
   };
 
-  // if (role !== 'admin') {
-  //   return <Typography>You are not authorized to view this page.</Typography>;
-  // }
+  if (role !== 'admin') {
+    return <Typography>You are not authorized to view this page.</Typography>;
+  }
 
   return (
     <Box>
