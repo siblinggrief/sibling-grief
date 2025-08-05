@@ -1,80 +1,74 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
-  Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
-  Button
+  Box, FormControl, InputLabel, Select, MenuItem, Typography, Button
 } from '@mui/material';
 import { useTheme } from "@mui/material/styles";
+import { useAppTheme } from '../context/ThemeContext';
+import API_URL from "../config";
 
 const availableFonts = [
-  { label: 'Libre Baskerville', value: 'Libre+Baskerville' },
-  { label: 'Open Sans', value: 'Open+Sans' },
-  { label: 'Roboto', value: 'Roboto' },
-  { label: 'Lora', value: 'Lora' },
-  { label: 'Merriweather', value: 'Merriweather' },
-  { label: 'Playfair Display', value: 'Playfair+Display' },
-  { label: 'Montserrat', value: 'Montserrat' },
-  { label: 'Raleway', value: 'Raleway' },
-  { label: 'Poppins', value: 'Poppins' },
-  { label: 'Work Sans', value: 'Work+Sans' },
-  { label: 'Quicksand', value: 'Quicksand' },
-  { label: 'Nunito', value: 'Nunito' },
-  { label: 'Source Serif Pro', value: 'Source+Serif+Pro' },
-  { label: 'Crimson Text', value: 'Crimson+Text' },
-  { label: 'DM Sans', value: 'DM+Sans' }
+  { label: "Libre Baskerville", value: "Libre+Baskerville" },
+  { label: "Open Sans", value: "Open+Sans" },
+  { label: "Roboto", value: "Roboto" },
+  { label: "Lora", value: "Lora" },
+  { label: "Merriweather", value: "Merriweather" },
+  { label: "Playfair Display", value: "Playfair+Display" },
+  { label: "Montserrat", value: "Montserrat" },
+  { label: "Raleway", value: "Raleway" },
+  { label: "Poppins", value: "Poppins" },
+  { label: "Work Sans", value: "Work+Sans" },
+  { label: "Quicksand", value: "Quicksand" },
+  { label: "Nunito", value: "Nunito" },
+  { label: "Source Serif Pro", value: "Source+Serif+Pro" },
+  { label: "Crimson Text", value: "Crimson+Text" },
+  { label: "DM Sans", value: "DM+Sans" }
 ];
 
 export default function FontSelector({ showSnackbar }) {
-  const [selectedFont, setSelectedFont] = useState(
-    localStorage.getItem('selectedFont') || 'Libre+Baskerville'
-  );
   const theme = useTheme();
+  const { font, setFont } = useAppTheme();
 
-  // Load preview fonts once when component mounts
+  // Load all fonts once so they can preview correctly in dropdown
   useEffect(() => {
-    const linkId = 'preview-google-fonts';
-    if (!document.getElementById(linkId)) {
-      const link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      link.href =
-        `https://fonts.googleapis.com/css2?` +
-        availableFonts.map(f => `family=${f.value}`).join('&') +
-        `&display=swap`;
+    const allFonts = availableFonts.map(f => `family=${f.value}`).join("&");
+    const fontLink = `https://fonts.googleapis.com/css2?${allFonts}&display=swap`;
+
+    if (!document.querySelector(`link[href="${fontLink}"]`)) {
+      const link = document.createElement("link");
+      link.href = fontLink;
+      link.rel = "stylesheet";
       document.head.appendChild(link);
     }
   }, []);
 
-  useEffect(() => {
-    applyFont(selectedFont);
-  }, [selectedFont]);
+const handleSave = async () => {
+  if (!font) {
+    showSnackbar("No font selected", "error");
+    return;
+  }
 
-  const applyFont = (font) => {
-    const linkId = 'dynamic-google-font';
-    let link = document.getElementById(linkId);
-    if (!link) {
-      link = document.createElement('link');
-      link.id = linkId;
-      link.rel = 'stylesheet';
-      document.head.appendChild(link);
+  try {
+    const res = await fetch(`${API_URL}/api/settings/font`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ font })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Unknown error");
     }
-    link.href = `https://fonts.googleapis.com/css2?family=${font}&display=swap`;
 
-    document.body.style.fontFamily = `"${font.replace(/\+/g, ' ')}", serif`;
-    localStorage.setItem('selectedFont', font);
-  };
+    showSnackbar("Font updated successfully!");
+  } catch (error) {
+    console.error("Failed to save font:", error);
+    showSnackbar(`Failed to update font: ${error.message}`, "error");
+  }
+};
 
-  const handleSave = () => {
-    // TODO: Save to backend for global effect
-    showSnackbar('Font updated successfully!');
-  };
 
   return (
-    <Box sx={{ mt: 3, p: 2, border: '1px solid #ccc', borderRadius: 2 }}>
+    <Box sx={{ mt: 3, p: 2, border: "1px solid #ccc", borderRadius: 2 }}>
       <Typography variant="h6">Font Settings</Typography>
       <FormControl sx={{ mt: 2, minWidth: 250 }}>
         <InputLabel id="font-select-label" sx={{ color: theme.palette.custom.mediumGreen }}>
@@ -83,24 +77,18 @@ export default function FontSelector({ showSnackbar }) {
         <Select
           labelId="font-select-label"
           label="Select Font"
-          value={selectedFont}
-          onChange={(e) => setSelectedFont(e.target.value)}
-          MenuProps={{
-            PaperProps: {
-              style: { maxHeight: 400 }
-            }
-          }}
+          value={font}
+          onChange={(e) => setFont(e.target.value)}
         >
-          {availableFonts.map((font) => (
+          {availableFonts.map((f) => (
             <MenuItem
-              key={font.value}
-              value={font.value}
+              key={f.value}
+              value={f.value}
               sx={{
-                fontFamily: `"${font.label}", serif`,
-                fontSize: '1rem'
+                fontFamily: `'${f.label}', serif`
               }}
             >
-              {font.label}
+              {f.label}
             </MenuItem>
           ))}
         </Select>
@@ -111,9 +99,7 @@ export default function FontSelector({ showSnackbar }) {
         sx={{
           backgroundColor: theme.palette.custom.darkGreen,
           color: theme.palette.custom.white,
-          "&:hover": {
-            backgroundColor: theme.palette.custom.mediumGreen
-          },
+          "&:hover": { backgroundColor: theme.palette.custom.mediumGreen },
           textTransform: "none",
           fontWeight: 400,
           marginTop: 3,

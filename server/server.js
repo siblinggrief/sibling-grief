@@ -14,6 +14,7 @@ const postRoutes = require("./routes/postRoutes");
 const cloudinaryRoutes = require("./routes/cloudinaryRoutes");
 const userRoutes = require("./routes/userRoutes");
 const subscribeRoutes = require("./routes/subscribeRoutes"); 
+const settingsRoutes = require("./routes/settingsRoutes");
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use("/api", postRoutes);
 app.use("/api", cloudinaryRoutes);
 app.use("/api", userRoutes);
 app.use("/api", subscribeRoutes);
+app.use("/api/settings", settingsRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running and listening on port ${PORT}`);

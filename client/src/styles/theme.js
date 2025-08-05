@@ -12,7 +12,7 @@ const commonColors = {
   // Add more custom colors here if needed
 };
 
-const theme = (mode) =>
+const theme = (mode, font = 'Libre Baskerville') =>
   createTheme({
     palette: {
       mode,
@@ -67,7 +67,16 @@ const theme = (mode) =>
           }),
     },
     typography: {
-      fontFamily: "'Libre Baskerville', 'Georgia', 'serif'",
+      fontFamily: `'${font}', 'Georgia', serif`,
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            fontFamily: `'${font}', 'Georgia', serif`,
+          },
+        },
+      },
     },
   });
 
