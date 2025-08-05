@@ -12,8 +12,10 @@ const commonColors = {
   // Add more custom colors here if needed
 };
 
-const theme = (mode, font = 'Libre Baskerville') =>
-  createTheme({
+const theme = (mode, font = 'Libre Baskerville') => {
+  const displayFont = font.replace(/\+/g, ' ');
+
+  return (createTheme({
     palette: {
       mode,
       ...(mode === "dark"
@@ -67,17 +69,21 @@ const theme = (mode, font = 'Libre Baskerville') =>
           }),
     },
     typography: {
-      fontFamily: `'${font}', 'Georgia', serif`,
+      fontFamily: `'${displayFont}', 'Georgia', serif`,
     },
     components: {
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            fontFamily: `'${font}', 'Georgia', serif`,
+            fontFamily: `'${displayFont}', 'Georgia', serif`,
           },
-        },
-      },
+          '*': {
+            fontFamily: `'${displayFont}', 'Georgia', serif !important`,
+          }
+        }
+      }
     },
-  });
+  })
+)};
 
 export default theme;
