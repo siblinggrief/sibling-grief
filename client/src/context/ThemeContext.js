@@ -52,7 +52,7 @@ export const AppThemeProvider = ({ children }) => {
     const fontName = font.replace(/\+/g, " "); // For CSS
     const fontLink = `https://fonts.googleapis.com/css2?family=${font}&display=swap`;
 
-    // Avoid duplicate font loading
+    // Avoid duplicate font from loading
     if (!document.querySelector(`link[href="${fontLink}"]`)) {
       const link = document.createElement("link");
       link.href = fontLink;
