@@ -75,7 +75,7 @@ const App = () => {
                 <Route path="/subscribe" element={<Subscribe />} />
                 <Route path="/unsubscribe" element={<Unsubscribe />} />
                 <Route path="/not-authorized" element={<NotAuthorized />} />
-                <Route path="/admin" element={<RequireAdmin><Admin /></RequireAdmin>} />
+                <Route path="/admin" element={<Admin />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Layout>

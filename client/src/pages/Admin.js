@@ -25,6 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DeleteDialog from '../components/DeleteDialog';
 import CustomAudioPlayer from '../components/CustomAudioPlayer';
 import AdminRequests from '../components/AdminRequests';
+import FontSelector from '../components/FontSelector';
 
 const Admin = () => {
   const { user, role } = useAuth();
@@ -114,9 +115,9 @@ const Admin = () => {
     }
   };
 
-  if (role !== 'admin') {
-    return <Typography>You are not authorized to view this page.</Typography>;
-  }
+  // if (role !== 'admin') {
+  //   return <Typography>You are not authorized to view this page.</Typography>;
+  // }
 
   return (
     <Box>
@@ -143,6 +144,7 @@ const Admin = () => {
         >
         <Tab label="Posts" />
         <Tab label="Admin Requests" />
+        <Tab label="Font Settings" />
       </Tabs>
 
       
@@ -381,6 +383,11 @@ const Admin = () => {
       {tabIndex === 1 && (
         <AdminRequests showSnackbar={showSnackbar} />
       )}
+
+      {tabIndex === 2 && (
+        <FontSelector showSnackbar={showSnackbar}/>
+      )}
+
 
 
        <Snackbar
