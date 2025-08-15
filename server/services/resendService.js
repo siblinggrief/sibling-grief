@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendNewsletterEmail = async ({ to, subject, html }) => {
   try {
     const response = await resend.emails.send({
-      from: 'Email Sender <sender@resend.dev>', // Any name + test domain
+      from: 'Contact FireFly <contact@thefirefly.live>', // Any name + test domain
       to, // e.g., ['naomi@resend.dev']
       subject,
       html,
